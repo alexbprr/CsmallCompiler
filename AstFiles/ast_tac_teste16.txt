@@ -1,0 +1,25 @@
+<AST>
+    <Attr>
+        <Id lexema='a' type='integer' />
+        <Num value=1 type='integer' />
+    </Attr>
+    <Attr>
+        <Id lexema='b' type='integer' />
+        <Num value=2 type='integer' />
+    </Attr>
+    <Attr>
+        <Id lexema='c' type='integer' />
+        <Num value=3 type='integer' />
+    </Attr>
+    <If>
+        <Id lexema='c' type='integer' />
+        <Attr>
+            <Id lexema='a' type='integer' />
+            <Num value=1 type='integer' />
+        </Attr>
+        <Attr>
+            <Id lexema='a' type='integer' />
+            <Num value=0 type='integer' />
+        </Attr>
+    </If>
+</AST>

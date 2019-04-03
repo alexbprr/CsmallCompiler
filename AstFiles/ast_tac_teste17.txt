@@ -1,0 +1,36 @@
+<AST>
+    <Attr>
+        <Id lexema='a' type='integer' />
+        <Num value=1 type='integer' />
+    </Attr>
+    <Attr>
+        <Id lexema='b' type='integer' />
+        <Num value=2 type='integer' />
+    </Attr>
+    <Attr>
+        <Id lexema='c' type='integer' />
+        <Num value=3 type='integer' />
+    </Attr>
+    <While>
+        <RelOp op='>'> 
+            <Id lexema='c' type='integer' />
+            <Num value=0 type='integer' />
+        </RelOp>
+        <Bloco>
+            <Attr>
+                <Id lexema='a' type='integer' />
+                <ArithOp op='+'> 
+                    <Id lexema='a' type='integer' />
+                    <Num value=1 type='integer' />
+                </ArithOp>
+            </Attr>
+            <Attr>
+                <Id lexema='c' type='integer' />
+                <ArithOp op='-'> 
+                    <Id lexema='c' type='integer' />
+                    <Num value=1 type='integer' />
+                </ArithOp>
+            </Attr>
+        </Bloco>
+    </While>
+</AST>

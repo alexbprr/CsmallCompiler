@@ -1,0 +1,27 @@
+
+vint = 120
+vfloat = 2.5
+a = 1
+b = 1
+c = 1
+if c == 1 goto L1
+goto L2
+L1:t0 = a + b
+a = t0
+a = 10
+goto L0
+L2:a = 45.55
+b = 30
+L0:L3:if 1 == 0 goto L5
+a = 3
+a = 10
+goto L3
+L5:if c != 1 goto L7
+goto L9
+L9:if c == 1 goto L7
+goto L8
+L8:if c <= 12.67 goto L7
+goto L6
+L7:t1 = a + b
+a = t1
+L6:

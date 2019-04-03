@@ -1,0 +1,10 @@
+c = 100
+if c != 1 goto L1
+goto L2
+L2: if c == 1 goto L1
+goto L0
+L1: t0 = 2 / 4
+t1 = t0 * 10
+t2 = c - t1
+c = t2
+L0: 

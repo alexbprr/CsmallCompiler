@@ -1,0 +1,10 @@
+
+x = 2
+y = 1
+t0 = x + y
+t1 = t0 + x
+if t1 == 0 goto L2
+z = 1
+goto L0
+L2: z = 0
+L0: 

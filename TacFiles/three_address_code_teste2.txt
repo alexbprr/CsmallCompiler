@@ -1,0 +1,15 @@
+
+L0:t0 = z * 9
+t1 = y + t0
+t2 = t1 - 3
+if x < t2 goto L1
+goto L2
+L1:t3 = x - 3
+x = t3
+if x > y goto L4
+goto L3
+L4: x = 0
+L3: t4 = y + 1
+y = t4
+goto L0
+L2:

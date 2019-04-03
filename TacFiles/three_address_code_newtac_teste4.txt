@@ -1,0 +1,8 @@
+.text
+
+t0 = b + c
+if a<t0 goto fall
+fall:if d == 0 goto fall
+if c == 0 goto L0
+L1:c = 1
+L0:

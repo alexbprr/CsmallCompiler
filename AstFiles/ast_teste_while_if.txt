@@ -1,0 +1,83 @@
+<AST>
+    <Attr>
+        <Id lexema='x' type='integer' />
+        <Num value=1 type='integer' />
+    </Attr>
+    <Attr>
+        <Id lexema='y' type='integer' />
+        <Num value=5 type='integer' />
+    </Attr>
+    <Attr>
+        <Id lexema='a' type='float point' />
+        <Num value=2 type='integer' />
+    </Attr>
+    <Attr>
+        <Id lexema='z' type='float point' />
+        <Num value=0 type='integer' />
+    </Attr>
+    <Read>
+        <Id lexema='z' type='float point' />
+    </Read>
+    <While>
+        <RelOp op='>'> 
+            <Id lexema='y' type='integer' />
+            <Num value=1 type='integer' />
+        </RelOp>
+        <Bloco>
+            <If>
+                <RelOp op='>'> 
+                    <Id lexema='y' type='integer' />
+                    <Num value=2 type='integer' />
+                </RelOp>
+                <Attr>
+                    <Id lexema='z' type='float point' />
+                    <ArithOp op='/'> 
+                        <Id lexema='z' type='float point' />
+                        <Id lexema='x' type='integer' />
+                    </ArithOp>
+                </Attr>
+            </If>
+            <Attr>
+                <Id lexema='x' type='integer' />
+                <ArithOp op='*'> 
+                    <Id lexema='x' type='integer' />
+                    <Num value=2 type='integer' />
+                </ArithOp>
+            </Attr>
+            <Attr>
+                <Id lexema='y' type='integer' />
+                <ArithOp op='-'> 
+                    <Id lexema='y' type='integer' />
+                    <Num value=1 type='integer' />
+                </ArithOp>
+            </Attr>
+        </Bloco>
+    </While>
+    <Print>
+        <Id lexema='a' type='float point' />
+    </Print>
+    <Print>
+        <Id lexema='x' type='integer' />
+    </Print>
+    <Print>
+        <Id lexema='y' type='integer' />
+    </Print>
+    <Print>
+        <Id lexema='z' type='float point' />
+    </Print>
+    <Print>
+        <LogicalOp op='||'> 
+            <RelOp op='>='> 
+                <Id lexema='z' type='float point' />
+                <Id lexema='x' type='integer' />
+            </RelOp>
+            <RelOp op='<'> 
+                <Id lexema='a' type='float point' />
+                <ArithOp op='*'> 
+                    <Num value=2.5 type='float' />
+                    <Id lexema='y' type='integer' />
+                </ArithOp>
+            </RelOp>
+        </LogicalOp>
+    </Print>
+</AST>

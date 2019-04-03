@@ -1,0 +1,23 @@
+digraph AST { 
+AST01[shape=circle,label="AST"];
+If12[shape=circle,label="If"];
+LogicalOp23[shape=circle,label="LogicalOp(||)"];
+Num34[shape=circle,label="Integer[2]"];
+LogicalOp23 -> Num34;
+Num35[shape=circle,label="Integer[4]"];
+LogicalOp23 -> Num35;
+If12 -> LogicalOp23;
+Attr26[shape=circle,label="Attr"];
+Id37[shape=circle,label="Integer[0]"];
+Attr26 -> Id37;
+Num38[shape=circle,label="Integer[1]"];
+Attr26 -> Num38;
+If12 -> Attr26;
+Attr29[shape=circle,label="Attr"];
+Id310[shape=circle,label="Integer[0]"];
+Attr29 -> Id310;
+Num311[shape=circle,label="Integer[0]"];
+Attr29 -> Num311;
+If12 -> Attr29;
+AST01 -> If12;
+}

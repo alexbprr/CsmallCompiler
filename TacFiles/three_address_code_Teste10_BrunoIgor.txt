@@ -1,0 +1,30 @@
+.text
+
+if a<1 goto L0
+t1 = 0
+goto L1
+L0:t1 = 1
+L1:t3 = a + 1
+t4 = a * 1
+if t3==t4 goto L2
+t2 = 0
+goto L3
+L2:t2 = 1
+L3:if t1 == 0 goto L4
+if t2 == 0 goto L4
+t0 = 1
+goto L5
+L4:t0 = 0
+L5:a = t0
+if a<1 goto L10
+goto L9
+L10:t5 = a + 1
+t6 = a * 1
+if t5==t6 goto L8
+goto L9
+L8:b = 1
+b = 2
+goto L7
+L9:b = 0
+b = 1
+L7:

@@ -1,0 +1,97 @@
+<AST>
+    <Attr>
+        <Id lexema='a' type='float point' />
+        <Num value=1 type='integer' />
+    </Attr>
+    <Read>
+        <Id lexema='i' type='integer' />
+    </Read>
+    <Read>
+        <Id lexema='k' type='integer' />
+    </Read>
+    <For>
+        <Attr>
+            <Id lexema='j' type='integer' />
+            <Num value=10 type='integer' />
+        </Attr>
+        <RelOp op='>='> 
+            <Id lexema='j' type='integer' />
+            <Num value=1 type='integer' />
+        </RelOp>
+        <Attr>
+            <Id lexema='j' type='integer' />
+            <ArithOp op='-'> 
+                <Id lexema='j' type='integer' />
+                <Num value=1 type='integer' />
+            </ArithOp>
+        </Attr>
+        <Bloco>
+            <If>
+                <RelOp op='=='> 
+                    <Id lexema='k' type='integer' />
+                    <Num value=2 type='integer' />
+                </RelOp>
+                <Bloco>
+                    <Attr>
+                        <Id lexema='a' type='float point' />
+                        <ArithOp op='-'> 
+                            <ArithOp op='*'> 
+                                <Id lexema='a' type='float point' />
+                                <Id lexema='i' type='integer' />
+                            </ArithOp>
+                            <Id lexema='j' type='integer' />
+                        </ArithOp>
+                    </Attr>
+                    <Attr>
+                        <Id lexema='k' type='integer' />
+                        <Num value=1 type='integer' />
+                    </Attr>
+                </Bloco>
+                <If>
+                    <RelOp op='=='> 
+                        <Id lexema='k' type='integer' />
+                        <Num value=1 type='integer' />
+                    </RelOp>
+                    <Bloco>
+                        <Attr>
+                            <Id lexema='a' type='float point' />
+                            <ArithOp op='+'> 
+                                <ArithOp op='*'> 
+                                    <Id lexema='a' type='float point' />
+                                    <Id lexema='i' type='integer' />
+                                </ArithOp>
+                                <Id lexema='j' type='integer' />
+                            </ArithOp>
+                        </Attr>
+                        <Attr>
+                            <Id lexema='k' type='integer' />
+                            <Num value=0 type='integer' />
+                        </Attr>
+                    </Bloco>
+                    <Bloco>
+                        <Attr>
+                            <Id lexema='k' type='integer' />
+                            <Num value=2 type='integer' />
+                        </Attr>
+                        <Attr>
+                            <Id lexema='a' type='float point' />
+                            <Num value=0 type='integer' />
+                        </Attr>
+                    </Bloco>
+                </If>
+            </If>
+            <Print>
+                <Id lexema='a' type='float point' />
+            </Print>
+            <Print>
+                <Id lexema='k' type='integer' />
+            </Print>
+        </Bloco>
+    </For>
+    <Print>
+        <RelOp op='<'> 
+            <Id lexema='a' type='float point' />
+            <Id lexema='i' type='integer' />
+        </RelOp>
+    </Print>
+</AST>

@@ -1,0 +1,35 @@
+<AST>
+    <Attr>
+        <Id lexema='a' type='integer' />
+        <ArithOp op='+'> 
+            <Id lexema='x' type='integer' />
+            <Id lexema='b' type='float point' />
+        </ArithOp>
+    </Attr>
+    <Attr>
+        <Id lexema='b' type='float point' />
+        <ArithOp op='+'> 
+            <ArithOp op='*'> 
+                <Id lexema='x' type='integer' />
+                <Id lexema='x' type='integer' />
+            </ArithOp>
+            <Id lexema='a' type='integer' />
+        </ArithOp>
+    </Attr>
+    <Attr>
+        <Id lexema='b' type='float point' />
+        <ArithOp op='-'> 
+            <Id lexema='b' type='float point' />
+            <Num value=2 type='integer' />
+        </ArithOp>
+    </Attr>
+    <Print>
+        <Id lexema='a' type='integer' />
+    </Print>
+    <Print>
+        <Id lexema='b' type='float point' />
+    </Print>
+    <Print>
+        <Id lexema='x' type='integer' />
+    </Print>
+</AST>

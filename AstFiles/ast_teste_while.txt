@@ -1,0 +1,59 @@
+<AST>
+    <Attr>
+        <Id lexema='x' type='integer' />
+        <Num value=1 type='integer' />
+    </Attr>
+    <Attr>
+        <Id lexema='y' type='integer' />
+        <Num value=5 type='integer' />
+    </Attr>
+    <Attr>
+        <Id lexema='a' type='float point' />
+        <Num value=2 type='integer' />
+    </Attr>
+    <Attr>
+        <Id lexema='z' type='float point' />
+        <Num value=1000 type='integer' />
+    </Attr>
+    <While>
+        <RelOp op='>'> 
+            <Id lexema='y' type='integer' />
+            <Num value=1 type='integer' />
+        </RelOp>
+        <Bloco>
+            <Attr>
+                <Id lexema='y' type='integer' />
+                <ArithOp op='-'> 
+                    <Id lexema='y' type='integer' />
+                    <Num value=1 type='integer' />
+                </ArithOp>
+            </Attr>
+            <Attr>
+                <Id lexema='x' type='integer' />
+                <ArithOp op='*'> 
+                    <Id lexema='x' type='integer' />
+                    <Num value=2 type='integer' />
+                </ArithOp>
+            </Attr>
+            <Attr>
+                <Id lexema='z' type='float point' />
+                <ArithOp op='/'> 
+                    <Id lexema='z' type='float point' />
+                    <Id lexema='x' type='integer' />
+                </ArithOp>
+            </Attr>
+        </Bloco>
+    </While>
+    <Print>
+        <Id lexema='a' type='float point' />
+    </Print>
+    <Print>
+        <Id lexema='x' type='integer' />
+    </Print>
+    <Print>
+        <Id lexema='y' type='integer' />
+    </Print>
+    <Print>
+        <Id lexema='z' type='float point' />
+    </Print>
+</AST>
