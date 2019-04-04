@@ -14,8 +14,11 @@ class LexicalAnalyzer
 {
     private:
         void returnToInitialState();
-    public:
-        std::string tokensNames[N];
+        void state1(char c);
+        void state2(char c);
+        void state4(char c);
+        void printTokenBuffer();
+        std::string *tokensNames;
         map<std::string,int> reservedWords;
         vector<Token*> tokens;
         vector<string> lexemaBuffer;
@@ -29,17 +32,15 @@ class LexicalAnalyzer
         IO *io;
         int value;
         static ofstream *lexical_file;
-
+    public:
         LexicalAnalyzer();
         LexicalAnalyzer(int s, IO *io_);
         virtual ~LexicalAnalyzer();
+        std::vector<Token*> getTokenVector() const;
+        std::string* getTokensNames() const;
         static void setLexicalFile(ofstream *lexical_file);
-        void state1(char c);
-        void state2(char c);
-        void state4(char c);
         void analyze();
         void printSymbolTable();
-        void printTokenBuffer();
         void saveTokenBuffer();
 };
 

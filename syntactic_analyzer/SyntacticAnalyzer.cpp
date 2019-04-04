@@ -20,25 +20,41 @@ SyntacticAnalyzer::SyntacticAnalyzer(std::vector<Token*> tokens)
   i = 0; //inicializa índice do vetor de tokens
 }
 
+std::vector<Token*> SyntacticAnalyzer::getTokenVector() const
+{
+    return this->tokens;
+}
+
+SymbolTable& SyntacticAnalyzer::getSymbolTable() const
+{
+    return *(this->symbolTable);
+}
+
+Astnode& SyntacticAnalyzer::getAstTree() const
+{
+    return *(this->astTree);
+}
+
 void SyntacticAnalyzer::match(int expectedToken)
 {
   if(this->tokens.at(i)->getTokenConstant() == expectedToken)
   {
-    cout << "Token " << this->la->tokensNames[this->tokens.at(i)->getTokenConstant()] << " reconhecido na entrada." << endl;
+    cout << "Token " << this->la->getTokensNames()[this->tokens.at(i)->getTokenConstant()] << " reconhecido na entrada." << endl;
+    if (i < this->tokens.size())
+      i++;
+    else
+    {
+      cout << "\033[1;31merror: \033[0m end of input reached." << endl;
+      error_file << "error: end of input reached." << endl;
+      //exit(1);
+    }
   }
   else
   {
-    cout << "Erro sintático." << endl;
-    error_file << "Erro sintático na linha " << this->tokens.at(i)->getLineNumber() << "." <<
-     "Token " << this->la->tokensNames[this->tokens.at(i)->getTokenConstant()] << " não reconhecido na entrada." << endl;
-  }
-  if (i < this->tokens.size())
-    i++;
-  else
-  {
-    cout << "Chegou ao fim da entrada. Tentativa de acesso fora dos limites do vetor de tokens." << endl;
-    error_file << "Chegou ao fim da entrada. Tentativa de acesso fora dos limites do vetor de tokens." << endl;
-    //exit(1);
+    cout << "\033[1;31merror: \033[0m \033[1;33mline " << this->tokens.at(i)->getLineNumber() << ":\033[0m " <<
+     this->la->getTokensNames()[expectedToken] << " expected." << endl;
+    error_file << "error: line " << this->tokens.at(i)->getLineNumber() << ": " <<
+     this->la->getTokensNames()[expectedToken] << " expected." << endl;
   }
 }
 
@@ -59,7 +75,10 @@ void SyntacticAnalyzer::Programa()
     error_file.close();
   }
   else
-    cout << "Token EOF não reconhecido no final da entrada." << endl;
+  {
+      cout << "\033[1;31merror: \033[0m \033[1;33mline " << this->tokens.at(i)->getLineNumber() << ":\033[0m " << "eof not recognized at the end of input." << endl;
+      cout << "Token EOF não reconhecido no final da entrada." << endl;
+  }
 }
 
 void SyntacticAnalyzer::Decl_Comando(vector<Astnode*> *nodeList)

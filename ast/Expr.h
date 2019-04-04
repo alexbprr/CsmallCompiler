@@ -6,7 +6,7 @@ using namespace std;
 class Expr: public Astnode
 {
   protected:
-      
+
   public:
       vector<Expr*> indices; //Referência para o indice do array. O indice pode ser Id ou Num
       Expr();

@@ -23,23 +23,24 @@ LexicalAnalyzer::LexicalAnalyzer(int s, IO *io_)
     reservedWords["read"] = READ;
     reservedWords["print"] = PRINT;
     reservedWords["for"] = FOR;
-    tokensNames[MAIN] = "MAIN";
-    tokensNames[ID] = "ID";
-    tokensNames[INT] = "INT";
-    tokensNames[FLOAT] = "FLOAT";
-    tokensNames[IF] = "IF";
-    tokensNames[ELSE] = "ELSE";
-    tokensNames[WHILE] = "WHILE";
-    tokensNames[READ] = "READ";
-    tokensNames[PRINT] = "PRINT";
-    tokensNames[FOR] = "FOR";
-    tokensNames[LBRACE] = "LBRACE";
-    tokensNames[RBRACE] = "RBRACE";
-    tokensNames[COMMA] = "COMMA";
-    tokensNames[PCOMMA] = "PCOMMA";
-    tokensNames[LBRACKET] = "LBRACKET";
-    tokensNames[RBRACKET] = "RBRACKET";
-    tokensNames[ATTR] = "ATTR";
+    this->tokensNames = (std::string*) malloc(N*sizeof(std::string));
+    this->tokensNames[MAIN] = "MAIN";
+    this->tokensNames[ID] = "ID";
+    this->tokensNames[INT] = "INT";
+    this->tokensNames[FLOAT] = "FLOAT";
+    this->tokensNames[IF] = "IF";
+    this->tokensNames[ELSE] = "ELSE";
+    this->tokensNames[WHILE] = "WHILE";
+    this->tokensNames[READ] = "READ";
+    this->tokensNames[PRINT] = "PRINT";
+    this->tokensNames[FOR] = "FOR";
+    this->tokensNames[LBRACE] = "LBRACE";
+    this->tokensNames[RBRACE] = "RBRACE";
+    this->tokensNames[COMMA] = "COMMA";
+    this->tokensNames[PCOMMA] = "PCOMMA";
+    this->tokensNames[LBRACKET] = "LBRACKET";
+    this->tokensNames[RBRACKET] = "RBRACKET";
+    this->tokensNames[ATTR] = "ATTR";
     tokensNames[OR] = "OR";
     tokensNames[AND] = "AND";
     tokensNames[EQ] = "EQ";
@@ -61,6 +62,17 @@ LexicalAnalyzer::LexicalAnalyzer(int s, IO *io_)
 LexicalAnalyzer::~LexicalAnalyzer()
 {
     //dtor
+    free(this->tokensNames);
+}
+
+std::vector<Token*> LexicalAnalyzer::getTokenVector() const
+{
+    return this->tokens;
+}
+
+std::string* LexicalAnalyzer::getTokensNames() const
+{
+    return this->tokensNames;
 }
 
 void LexicalAnalyzer::returnToInitialState()
@@ -350,6 +362,14 @@ void LexicalAnalyzer::analyze()
             c = io->getNextChar();
         //cout << "Char " << c << endl;
     }///fim do while
+    this->tokens.push_back(new Token("EOF", 0, EOF));
+    this->printTokenBuffer();
+    //saveTokenBufferInFile();
+}
+
+void saveTokenBufferInFile()
+{
+
 }
 
 void LexicalAnalyzer::printTokenBuffer()

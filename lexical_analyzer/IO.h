@@ -20,17 +20,16 @@ class IO
         int bufferAtual;
         size_t nbytesRead;
         void reloadBuffer();
-
+        char* getFileName();
+        void retract();
     public:
         IO();
         IO(int argc, char* argv[]);
-        char* getFileName();        
         void openFile();
         void readFile();
-        void printfBuffersContent();
-        void retract();
         char getNextChar();
-        int isEOF();
+        int isEOF() const;
+        void printfBuffersContent();
         virtual ~IO();
     protected:
     private:

@@ -10,12 +10,8 @@ IO::IO(int argc, char* argv[])
     count = 0;
     eof_ = 0;
     printf("Tamanho do buffer %d. \n", BUFFER_SIZE);
-    Buffer* buffer0 = new Buffer(BUFFER_SIZE);
-    Buffer* buffer1 = new Buffer(BUFFER_SIZE);
-    bufferes.push_back(buffer0);
-    bufferes.push_back(buffer1);
-    bufferes[0]->forward = 0;
-    bufferes[1]->forward = 0;
+    bufferes.push_back(new Buffer(BUFFER_SIZE));
+    bufferes.push_back(new Buffer(BUFFER_SIZE));
 
     if(argc > 1)
     {
@@ -33,8 +29,6 @@ IO::IO(int argc, char* argv[])
 
 char* IO::getFileName()
 {
-  //std::string aux(this->fileName);
-  //return aux;
   return this->fileName;
 }
 
@@ -116,7 +110,7 @@ void IO::reloadBuffer()
 }
 
 
-int IO::isEOF()
+int IO::isEOF() const
 {
     return eof_;
 }
@@ -180,7 +174,12 @@ void IO::printfBuffersContent()
     printf("\n");
 }
 
+void free_(Buffer* b)
+{
+    free(b);
+}
+
 IO::~IO()
 {
-    //dtor
+    for_each(bufferes.begin(),bufferes.end(), free_);
 }

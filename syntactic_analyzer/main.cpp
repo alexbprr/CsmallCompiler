@@ -21,8 +21,6 @@ int main(int argc, char* argv[])
 
     LexicalAnalyzer *la = new LexicalAnalyzer(1,io);
     la->analyze();
-    la->tokens.push_back(new Token("EOF", 0, EOF));
-    la->printTokenBuffer();
     string lexical_filename = "testes_lexico/saida_" + string(fileName) + ".txt";
     cout << lexical_filename << endl;
     ofstream lex_file;
@@ -30,17 +28,16 @@ int main(int argc, char* argv[])
     LexicalAnalyzer::setLexicalFile(&lex_file);
     la->saveTokenBuffer();
     lex_file.close();
-
     //SyntacticAnalyzer* synAnalyzer = new SyntacticAnalyzer(la->tokens, la->tokensNames);
-    SyntacticAnalyzer* synAnalyzer = new SyntacticAnalyzer(la->tokens, la);
+    SyntacticAnalyzer* synAnalyzer = new SyntacticAnalyzer(la->getTokenVector(), la);
     synAnalyzer->Programa();
-    synAnalyzer->symbolTable->printSymbolTable();
+    synAnalyzer->getSymbolTable().printSymbolTable();
 
     string ast_filename = "AstFiles/ast_" + string(fileName) + ".txt";
     ofstream ast_file;
     ast_file.open(ast_filename.c_str());
     Astnode::setAstFile(&ast_file);
-    synAnalyzer->astTree->printNode(0); //Imprime a AST
+    synAnalyzer->getAstTree().printNode(0); //Imprime a AST
     ast_file.close();
 
     //Gera Dot file
@@ -50,12 +47,12 @@ int main(int argc, char* argv[])
     Astnode::setDotFile(&dotfile);
     dotfile << "digraph AST { " << endl;
     int cont = 0;
-    synAnalyzer->astTree->generateDot(0,&cont);
+    synAnalyzer->getAstTree().generateDot(0,&cont);
     dotfile << "}" << endl;
     dotfile.close();
 
-    synAnalyzer->astTree->evaluate(); //Chama o interpretador
-    synAnalyzer->symbolTable->printSymbolTable(); //Imprime a tabela de símbolos
+    synAnalyzer->getAstTree().evaluate(); //Chama o interpretador
+    synAnalyzer->getSymbolTable().printSymbolTable(); //Imprime a tabela de símbolos
 
     string tac_filename = "TacFiles/three_address_code_" + string(fileName) + ".txt";
     ofstream tac_file;
@@ -69,7 +66,10 @@ int main(int argc, char* argv[])
     pythonfile.open(pythonfilename.c_str());
     Astnode::setPythonFile(&pythonfile);
     pythonfile << "#!/usr/bin/env python3\n# -*- coding: utf-8 -*-\n";
-    synAnalyzer->astTree->generatePythonCode(0);
+    synAnalyzer->getAstTree().generatePythonCode(0);
     pythonfile.close();
+
+    free(la);
+    free(synAnalyzer);
     return 0;
 }

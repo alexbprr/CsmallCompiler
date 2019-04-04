@@ -29,19 +29,14 @@ class SyntacticAnalyzer
   private:
     int i;
     int currentType; // 0: inteiro, 1: ponto flutuante
-  public:
-    std::string tokensNames[N];
-    LexicalAnalyzer* la;
     std::vector<Token*> tokens;
+    LexicalAnalyzer* la;
     SymbolTable* symbolTable;
     Astnode* astTree;
     Id* currentIdNode;
     ofstream error_file;
 
-    SyntacticAnalyzer(std::vector<Token*> tokens, LexicalAnalyzer* la);
-    SyntacticAnalyzer(std::vector<Token*> tokens);
     void match(int expectedToken);
-    void Programa();
     void Decl_Comando(std::vector<Astnode*> *nodeList);
     void Declaracao(std::vector<Astnode*> *nodeList);
     void Tipo();
@@ -64,6 +59,14 @@ class SyntacticAnalyzer
     Expr* Fator();
     Expr* Arranjo(Expr* node);
     Expr* Indice();
+
+  public:
+    SyntacticAnalyzer(std::vector<Token*> tokens, LexicalAnalyzer* la);
+    SyntacticAnalyzer(std::vector<Token*> tokens);
+    std::vector<Token*> getTokenVector() const;
+    SymbolTable& getSymbolTable() const;
+    Astnode& getAstTree() const;
+    void Programa();
 };
 
 #endif
