@@ -21,7 +21,7 @@ int main(int argc, char* argv[])
 
     LexicalAnalyzer *la = new LexicalAnalyzer(1,io);
     la->analyze();
-    string lexical_filename = "testes_lexico/saida_" + string(fileName) + ".txt";
+    string lexical_filename = "LexicalFiles/lex_" + string(fileName) + ".txt";
     cout << lexical_filename << endl;
     ofstream lex_file;
     lex_file.open(lexical_filename.c_str());
@@ -58,7 +58,7 @@ int main(int argc, char* argv[])
     ofstream tac_file;
     tac_file.open(tac_filename.c_str());
     Astnode::setTacFile(&tac_file);
-    //synAnalyzer->astTree->generateCode(); //Chama o gerador de código de três endereços
+    synAnalyzer->getAstTree().generateCode(); //Chama o gerador de código de três endereços
     tac_file.close();
 
     string pythonfilename = "PythonFiles/pythoncode_" + string(fileName) + ".py";

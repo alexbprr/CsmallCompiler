@@ -124,7 +124,7 @@ string Astnode::tabs(int level)
       // else
       //   ss << (*it)->name << level << *cont << "[shape=circle,label=\""<< (*it)->name << "\"]";
       //printf("Dot name: %s\n", (*it)->dotname.c_str());
- 
+
 
 void Astnode::generateDot(int level, int *cont)
 {
@@ -186,9 +186,13 @@ void Astnode::printNode(int level)
   string deslocamento = this->tabs(level);
   cout << deslocamento << "<" << this->name << ">" << endl;
   (*Astnode::ast_file) << deslocamento << "<" << this->name << ">" << endl;
-  for(vector<Astnode*>::iterator it = this->children.begin(); (*it) != NULL && it != this->children.end(); ++it)
+  if (this->children.size() > 0)
   {
-    (*it)->printNode(level+1);
+      for(vector<Astnode*>::iterator it = this->children.begin(); it != this->children.end(); ++it)
+      {
+          if ((*it) != NULL)
+            (*it)->printNode(level+1);
+      }
   }
   cout << deslocamento << "</" << this->name << ">" << endl;
   (*Astnode::ast_file) << deslocamento << "</" << this->name << ">" << endl;
@@ -196,16 +200,24 @@ void Astnode::printNode(int level)
 
 float Astnode::evaluate()
 {
-  for(vector<Astnode*>::iterator it = this->children.begin(); it != this->children.end(); ++it)
-    (*it)->evaluate();
+    if (this->children.size() > 0)
+    {
+        for(vector<Astnode*>::iterator it = this->children.begin(); it != this->children.end(); ++it)
+            if ((*it) != NULL)
+                (*it)->evaluate();
+    }
 }
 
 void Astnode::generateCode()
 {
-  for(vector<Astnode*>::iterator it = this->children.begin(); (*it) != NULL && it != this->children.end(); ++it)
-  {
-    (*it)->generateCode();
-  }
+    if (this->children.size() > 0)
+    {
+        for(vector<Astnode*>::iterator it = this->children.begin(); it != this->children.end(); ++it)
+        {
+            if ((*it) != NULL)
+                (*it)->generateCode();
+        }
+    }
 }
 
 void Astnode::generateBranchCode(){}
@@ -225,8 +237,12 @@ string Astnode::pythonTab(int level)
 
 void Astnode::generatePythonCode(int level)
 {
-    for(vector<Astnode*>::iterator it = this->children.begin(); (*it) != NULL && it != this->children.end(); ++it)
+    if (this->children.size() > 0)
     {
-      (*it)->generatePythonCode(level);
+        for(vector<Astnode*>::iterator it = this->children.begin(); it != this->children.end(); ++it)
+        {
+            if ((*it) != NULL)
+                (*it)->generatePythonCode(level);
+        }
     }
 }

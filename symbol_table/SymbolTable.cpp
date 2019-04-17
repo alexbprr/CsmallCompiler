@@ -46,6 +46,7 @@ TableEntry* SymbolTable::insertEntry(string lexema, int token, int lineNumber)
     te->lexema = lexema;
     te->tokenType = token;
     te->lineNumber = lineNumber;
+    te->value = 0.;
     this->table[lexema] = te;
     return te;
 }
@@ -66,6 +67,7 @@ TableEntry* SymbolTable::insertEntry(string lexema, int token, int lineNumber, i
       te->tokenType = token;
       te->lineNumber = lineNumber;
       te->type = type;
+      te->value = 0.;
       this->table[lexema] = te;
       return te;
     }

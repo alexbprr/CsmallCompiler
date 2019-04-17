@@ -15,7 +15,8 @@ void Expr::printNode(int level)
   (*Astnode::ast_file) << deslocamento <<  "<" << this->name <<" op='" << this->op << "'> " << endl;
   for (vector<Astnode*>::iterator it = this->children.begin(); it != this->children.end(); ++it)
   {
-    (*it)->printNode(level+1);
+      if ((*it) != NULL)
+        (*it)->printNode(level+1);
   }
   cout << deslocamento << "</" << this->name << ">" << endl;
   (*Astnode::ast_file) << deslocamento << "</" << this->name << ">" << endl;

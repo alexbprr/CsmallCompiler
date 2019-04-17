@@ -12,16 +12,18 @@ Attr::Attr(string name, Astnode* id, Astnode* expr)
   this->name = name;
   if (id != NULL)
     this->children.push_back(id);
-  //if (expr != NULL)
+  if (expr != NULL)
     this->children.push_back(expr);
 }
 
 float Attr::evaluate()
 {
-  float expr_value = this->children[1]->evaluate();
-  Id* id_node = (Id*) this->children[0];
-  id_node->tableEntryRef->setValue(expr_value);
-  id_node->setFloatValue(expr_value);
+    float expr_value;
+    if (this->children.at(1) != NULL)
+        expr_value = this->children.at(1)->evaluate();
+    Id* id_node = (Id*) this->children.at(0);
+    id_node->tableEntryRef->setValue(expr_value);
+    id_node->setFloatValue(expr_value);
 }
 
 void Attr::generateCode()

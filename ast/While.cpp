@@ -36,10 +36,14 @@ While::While(string name)
 float While::evaluate()
 {
   float expr_value = this->children[0]->evaluate();
+  int i = 0;
   while(expr_value != 0)
   {
     this->children[1]->evaluate();
     expr_value = this->children[0]->evaluate();
+    if (i == 100000)
+        break;
+    i++;
   }
 }
 

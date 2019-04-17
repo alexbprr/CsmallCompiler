@@ -362,7 +362,7 @@ void LexicalAnalyzer::analyze()
             c = io->getNextChar();
         //cout << "Char " << c << endl;
     }///fim do while
-    this->tokens.push_back(new Token("EOF", 0, EOF));
+    this->tokens.push_back(new Token("EOF", 0, EOF, "eof"));
     this->printTokenBuffer();
     //saveTokenBufferInFile();
 }

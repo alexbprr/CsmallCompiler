@@ -164,11 +164,10 @@ void SyntacticAnalyzer::Decl2(vector<Astnode*> *nodeList)
     match(ATTR);
     Expr* expr = Expressao();
     Attr* attr_node;
-    cout << "[Teste linha 139] " << this->currentIdNode->tableEntryRef->getLexema() << endl;
     if (this->currentIdNode != NULL)
       attr_node = new Attr("Attr", this->currentIdNode, expr);
     else
-      cerr << "[Erro linha 141] Nó Id nulo." << endl;
+      cerr << "Nó Id nulo." << endl;
     (*nodeList).push_back(attr_node);
     Decl2(nodeList);
   }

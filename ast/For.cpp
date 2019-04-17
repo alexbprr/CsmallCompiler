@@ -11,10 +11,14 @@ For::For(string name)
 float For::evaluate()
 {
     this->children[0]->evaluate();
+    int i = 0;
     while(this->children[1]->evaluate() != 0)
     {
         this->children[3]->evaluate();
         this->children[2]->evaluate();
+        if (i == 100000)
+            break;
+        i++;
     }
     return 0;
 }

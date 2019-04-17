@@ -40,9 +40,9 @@ If::If(string name)
 float If::evaluate()
 {
   float expr_value = this->children[0]->evaluate();
-  if (expr_value != 0)
+  if (expr_value != 0 && this->children.size() == 2)
     this->children[1]->evaluate();
-  else if (this->children.size() > 2)
+  else if (this->children.size() == 3)
     this->children[2]->evaluate();
 }
 
