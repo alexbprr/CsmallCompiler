@@ -37,10 +37,10 @@ int main(int argc, char* argv[])
     ofstream ast_file;
     ast_file.open(ast_filename.c_str());
     Astnode::setAstFile(&ast_file);
-    synAnalyzer->getAstTree().printNode(0); //Imprime a AST
+    synAnalyzer->getAstTree().printNode(0); //Print AST
     ast_file.close();
 
-    //Gera Dot file
+    //Generate Dot file
     ofstream dotfile;
     string dotfilename = "DotFiles/" + string(fileName) + ".dot";
     dotfile.open(dotfilename.c_str());
@@ -51,8 +51,13 @@ int main(int argc, char* argv[])
     dotfile << "}" << endl;
     dotfile.close();
 
-    synAnalyzer->getAstTree().evaluate(); //Chama o interpretador
-    synAnalyzer->getSymbolTable().printSymbolTable(); //Imprime a tabela de símbolos
+    //Generate the svg image
+    string svgfilename = "DotFiles/" + string(fileName) + ".svg";
+    string com = "dot -Tsvg " + dotfilename + " > " + svgfilename;
+    system(com.c_str());
+
+    synAnalyzer->getAstTree().evaluate(); //Call the interpreter
+    synAnalyzer->getSymbolTable().printSymbolTable(); //Print the symbol table
 
     string tac_filename = "TacFiles/three_address_code_" + string(fileName) + ".txt";
     ofstream tac_file;
