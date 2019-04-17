@@ -17,6 +17,7 @@ class SymbolTable{
         SymbolTable();
         map<string, TableEntry*> getSymbolTable() const;
         void printSymbolTable();
+        void saveSymbolTable();
         TableEntry* insertEntry(string lexema, int token, int lineNumber);
         TableEntry* insertEntry(string lexema, int token, int lineNumber, int type);
         TableEntry* getTableEntry(string key);

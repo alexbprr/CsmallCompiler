@@ -58,6 +58,7 @@ int main(int argc, char* argv[])
 
     synAnalyzer->getAstTree().evaluate(); //Call the interpreter
     synAnalyzer->getSymbolTable().printSymbolTable(); //Print the symbol table
+    synAnalyzer->getSymbolTable().saveSymbolTable();
 
     string tac_filename = "TacFiles/three_address_code_" + string(fileName) + ".txt";
     ofstream tac_file;

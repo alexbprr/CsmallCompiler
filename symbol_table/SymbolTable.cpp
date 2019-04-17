@@ -71,7 +71,8 @@ TableEntry* SymbolTable::insertEntry(string lexema, int token, int lineNumber, i
       this->table[lexema] = te;
       return te;
     }
-  }
+}
+
 void SymbolTable::printSymbolTable()
 {
     int i = 0;
@@ -90,6 +91,29 @@ void SymbolTable::printSymbolTable()
         i++;
     }
     cout << "---------------------------------" <<endl;
+}
+
+void SymbolTable::saveSymbolTable()
+{
+    ofstream symboltablefile;
+    symboltablefile.open("symboltable.txt");
+    int i = 0;
+    TableEntry* entry;
+    symboltablefile << "-------Symbol Table--------------" <<endl;
+    map<string,TableEntry*>::iterator it;
+    for (it = this->table.begin(); it != this->table.end(); ++it)
+    {
+        symboltablefile << i << ":  ";
+        entry = (TableEntry*) it->second;
+        symboltablefile << "token: " << tokensNames[entry->tokenType]
+        << ", lexema: " << entry->getLexema()
+        << ", tipo: " << entry->getTypeName()
+        << ", valor: " << entry->getValue()
+        << ", line number: " << entry->getLineNumber() << endl;
+        i++;
+    }
+    symboltablefile << "---------------------------------" <<endl;
+    symboltablefile.close();
 }
 
 TableEntry* SymbolTable::getTableEntry(string key)
