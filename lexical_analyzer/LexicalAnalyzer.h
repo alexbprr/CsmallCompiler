@@ -20,6 +20,7 @@ class LexicalAnalyzer
         void printTokenBuffer();
         std::string *tokensNames;
         map<std::string,int> reservedWords;
+        map<int,std::string> lexemaNames;
         vector<Token*> tokens;
         vector<string> lexemaBuffer;
         string lexema;
@@ -38,6 +39,8 @@ class LexicalAnalyzer
         virtual ~LexicalAnalyzer();
         std::vector<Token*> getTokenVector() const;
         std::string* getTokensNames() const;
+        //map<int,std::string> getLexemaNames() const;
+        std::string getLexema(const int &token);
         static void setLexicalFile(ofstream *lexical_file);
         void analyze();
         void printSymbolTable();

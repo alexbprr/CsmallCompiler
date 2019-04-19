@@ -6,7 +6,7 @@ LexicalAnalyzer::LexicalAnalyzer() {}
 
 void LexicalAnalyzer::setLexicalFile(ofstream *lexical_file)
 {
-  LexicalAnalyzer::lexical_file = lexical_file;
+    LexicalAnalyzer::lexical_file = lexical_file;
 }
 
 LexicalAnalyzer::LexicalAnalyzer(int s, IO *io_)
@@ -15,8 +15,10 @@ LexicalAnalyzer::LexicalAnalyzer(int s, IO *io_)
     useLastChar = false;
     io = io_;
     reservedWords["main"] = MAIN;
+    reservedWords["void"] = VOID;
     reservedWords["int"] = INT;
     reservedWords["float"] = FLOAT;
+    reservedWords["char"] = CHAR;
     reservedWords["if"] = IF;
     reservedWords["else"] = ELSE;
     reservedWords["while"] = WHILE;
@@ -41,22 +43,36 @@ LexicalAnalyzer::LexicalAnalyzer(int s, IO *io_)
     this->tokensNames[LBRACKET] = "LBRACKET";
     this->tokensNames[RBRACKET] = "RBRACKET";
     this->tokensNames[ATTR] = "ATTR";
-    tokensNames[OR] = "OR";
-    tokensNames[AND] = "AND";
-    tokensNames[EQ] = "EQ";
-    tokensNames[NE] = "NE";
-    tokensNames[LT] = "LT";
-    tokensNames[LE] = "LE";
-    tokensNames[GT] = "GT";
-    tokensNames[GE] = "GE";
-    tokensNames[PLUS] = "PLUS";
-    tokensNames[MINUS] = "MINUS";
-    tokensNames[MULT] = "MULT";
-    tokensNames[DIV] = "DIV";
-    tokensNames[INTEGER_CONST] = "INTEGER_CONST";
-    tokensNames[FLOAT_CONST] = "FLOAT_CONST";
-    tokensNames[LCOL] = "LCOL";
-    tokensNames[RCOL] = "RCOL";
+    this->tokensNames[OR] = "OR";
+    this->tokensNames[AND] = "AND";
+    this->tokensNames[EQ] = "EQ";
+    this->tokensNames[NE] = "NE";
+    this->tokensNames[LT] = "LT";
+    this->tokensNames[LE] = "LE";
+    this->tokensNames[GT] = "GT";
+    this->tokensNames[GE] = "GE";
+    this->tokensNames[PLUS] = "PLUS";
+    this->tokensNames[MINUS] = "MINUS";
+    this->tokensNames[MULT] = "MULT";
+    this->tokensNames[DIV] = "DIV";
+    this->tokensNames[INTEGER_CONST] = "INTEGER_CONST";
+    this->tokensNames[FLOAT_CONST] = "FLOAT_CONST";
+    this->tokensNames[LCOL] = "LCOL";
+    this->tokensNames[RCOL] = "RCOL";
+    this->tokensNames[CHAR] = "CHAR";
+    this->tokensNames[VOID] = "VOID";
+    this->tokensNames[INC] = "INC";
+    this->tokensNames[DEC] = "DEC";
+    this->lexemaNames[LBRACKET] = "(";
+    this->lexemaNames[RBRACKET] = ")";
+    this->lexemaNames[LBRACE] = "{";
+    this->lexemaNames[RBRACE] = "}";
+    this->lexemaNames[COMMA] = ",";
+    this->lexemaNames[PCOMMA] = ";";
+    this->lexemaNames[LCOL] = "[";
+    this->lexemaNames[RCOL] = "]";
+    this->lexemaNames[ATTR] = "=";
+    this->lexemaNames[PLUS] = "+";
 }
 
 LexicalAnalyzer::~LexicalAnalyzer()
@@ -75,13 +91,23 @@ std::string* LexicalAnalyzer::getTokensNames() const
     return this->tokensNames;
 }
 
+std::string LexicalAnalyzer::getLexema(const int &key) 
+{
+    // map<int,std::string>::iterator it;
+    // it = this->lexemaNames.find(key);
+    // if(it != this->lexemaNames.end())
+    //     return (it->second);
+    // else
+    //     return "";
+    return this->lexemaNames[key];
+}
+
 void LexicalAnalyzer::returnToInitialState()
 {
     useLastChar = true;
     state = 1;
     lexema.clear();
 }
-
 
 void LexicalAnalyzer::analyze()
 {
@@ -131,7 +157,6 @@ void LexicalAnalyzer::analyze()
             {
                 token = new Token("LCOL",lineNumber,LCOL, "[");
                 tokens.push_back(token);
-                state = 5;
             }
             else if(c == ']')
             {
@@ -240,15 +265,19 @@ void LexicalAnalyzer::analyze()
             }
             else if (c == '+')
             {
-                token = new Token("PLUS", lineNumber, PLUS, "+");
-                tokens.push_back(token);
-                state = 1;
+                //token = new Token("PLUS", lineNumber, PLUS, "+");
+                //tokens.push_back(token);
+                //state = 1;
+                lexema.push_back(c);
+                state = 5;
             }
             else if (c == '-')
             {
-                token = new Token("MINUS", lineNumber, MINUS, "-");
-                tokens.push_back(token);
-                state = 1;
+                //token = new Token("MINUS", lineNumber, MINUS, "-");
+                //tokens.push_back(token);
+                //state = 1;
+                lexema.push_back(c);
+                state = 6;
             }
             else if (c == '*')
             {
@@ -271,7 +300,7 @@ void LexicalAnalyzer::analyze()
                 if(c == '\n')
                     lineNumber++;
                 else
-                  useLastChar = true;
+                    useLastChar = true;
             }
             else
                 if(c == ' ' || c == '\t')
@@ -344,14 +373,34 @@ void LexicalAnalyzer::analyze()
             returnToInitialState();
             break;
         case 5:
-            while(isdigit(c))
+            if (c == '+')
             {
                 lexema.push_back(c);
-                c = io->getNextChar();
+                token = new Token("INC", lineNumber,INC,lexema);
+                tokens.push_back(token);
+                state = 1;
+                lexema.clear();
             }
-            token = new Token("INTEGER_CONST", lineNumber,INTEGER_CONST,lexema);
-            tokens.push_back(token);
-            returnToInitialState();
+            else {
+                token = new Token("PLUS", lineNumber,PLUS,lexema);
+                tokens.push_back(token);
+                returnToInitialState();
+            }
+            break;
+        case 6:
+            if (c == '-')
+            {
+                lexema.push_back(c);
+                token = new Token("DEC", lineNumber,DEC,lexema);
+                tokens.push_back(token);
+                state = 1;
+                lexema.clear();
+            }
+            else {
+                token = new Token("MINUS", lineNumber,MINUS,lexema);
+                tokens.push_back(token);
+                returnToInitialState();
+            }
             break;
         default:
             break;

@@ -10,106 +10,106 @@ Astnode:: Astnode(){ }
 
 Astnode:: Astnode(string name)
 {
-  this->name = name;
+    this->name = name;
 }
 
 vector<Astnode*>* Astnode::getChildren()
 {
-  return &(this->children);
+    return &(this->children);
 }
 
 string Astnode::getName()
 {
-  return name;
+    return name;
 }
 
 float Astnode::getValue()
 {
-  return this->value;
+    return this->value;
 }
 
 Operand* Astnode::getAddress()
 {
-  return this->address;
+    return this->address;
 }
 
 Label* Astnode::getNextLabel()
 {
-  return this->next;
+    return this->next;
 }
 
 Label* Astnode::getTrueLabel()
 {
-  return this->true_label;
+    return this->true_label;
 }
 
 Label* Astnode::getFalseLabel()
 {
-  return this->false_label;
+    return this->false_label;
 }
 
 void Astnode::setChildren(vector<Astnode*> children)
 {
-  this->children = children;
+    this->children = children;
 }
 
 void Astnode::setName(string name)
 {
-  this->name = name;
+    this->name = name;
 }
 
 void Astnode::setIntValue(int value)
 {
-  this->intValue = value;
+    this->intValue = value;
 }
 
 void Astnode::setFloatValue(float value)
 {
-  this->value = value;
+    this->value = value;
 }
 
 void Astnode::setAddress(Operand* o)
 {
-  this->address = o;
+    this->address = o;
 }
 
 void Astnode::setTacFile(ofstream *tac_file)
 {
-  Astnode::tac_file = tac_file;
+    Astnode::tac_file = tac_file;
 }
 
 void Astnode::setAstFile(ofstream *ast_file)
 {
-  Astnode::ast_file = ast_file;
+    Astnode::ast_file = ast_file;
 }
 
 void Astnode::setPythonFile(ofstream *pythonfile)
 {
-  Astnode::pythonfile = pythonfile;
+    Astnode::pythonfile = pythonfile;
 }
 
 void Astnode::setDotFile(ofstream *dotfile)
 {
-  Astnode::dotfile = dotfile;
+    Astnode::dotfile = dotfile;
 }
 
 void Astnode::addChild(Astnode* node)
 {
   if (node == NULL)
-    cerr << "Tentativa de adicionar um filho nulo." << endl;
+    cerr << "{Astnode::addChild}: Tentativa de adicionar um filho nulo." << endl;
   else
     this->children.push_back(node);
 }
 
 string Astnode::tabs(int level)
 {
-  string deslocamento = "";
-  while (level!=0)
-  {
-    level = level - 1;
-    deslocamento += "    ";
-  }
-  return deslocamento;
+    string deslocamento = "";
+    while (level!=0)
+    {
+        level = level - 1;
+        deslocamento += "    ";
+    }
+    return deslocamento;
 }
 
      //if ((*it)->tableEntryRef != NULL)
@@ -128,57 +128,58 @@ string Astnode::tabs(int level)
 
 void Astnode::generateDot(int level, int *cont)
 {
-  std::stringstream ss;
-  if (level == 0)
-  {
-    ss << this->name;
-    this->dotname = ss.str();
-    ss.str("");
-  }
-  (*cont)++;
-  if (this->children.size() > 0)
-  {
-    if (this->op.length() > 0)
-      ss << this->name << level << *cont << "[shape=circle,label=\""<< this->name << "("<<  this->op <<")\"];"<<endl;
-    else
-      ss << this->name << level << *cont << "[shape=circle,label=\""<< this->name << "\"];"<< endl;
-    (*Astnode::dotfile) << ss.str();
-    ss.str("");
-    ss << this->name << level << *cont;
-    this->dotname = ss.str();
-    ss.str("");
-    for(vector<Astnode*>::iterator it = this->children.begin(); (*it) != NULL && it != this->children.end(); ++it)
+    std::stringstream ss;
+    if (level == 0)
     {
-      if ((*it)->dotname.length() == 0)
-      {
-        //printf("lenght == 0\n");
-        ss << (*it)->name << level << *cont;
-        (*it)->dotname = ss.str();
+        ss << this->name;
+        this->dotname = ss.str();
         ss.str("");
-      }
-      (*it)->generateDot(level + 1, cont);
-      (*Astnode::dotfile) << this->dotname << " -> " << (*it)->dotname << ";" << endl;
     }
-  }
-  else
-  {
-    if (this->getName() == "Id")
+    (*cont)++;
+    if (this->children.size() > 0)
     {
-      ss << this->name << level << *cont << "[shape=circle,label=\"Id["<< this->lexema << "]\"];"<< endl;
+        if (this->op.length() > 0)
+            ss << this->name << level << *cont << "[shape=circle,label=\""<< this->name << "("<<  this->op <<")\"];"<<endl;
+        else
+            ss << this->name << level << *cont << "[shape=circle,label=\""<< this->name << "\"];"<< endl;
+        (*Astnode::dotfile) << ss.str();
+        ss.str("");
+        ss << this->name << level << *cont;
+        this->dotname = ss.str();
+        ss.str("");
+        for(vector<Astnode*>::iterator it = this->children.begin(); it != this->children.end(); ++it)
+        {
+            if ((*it) != NULL)
+            {
+                if ((*it)->dotname.length() == 0)
+                {
+                    ss << (*it)->name << level << *cont;
+                    (*it)->dotname = ss.str();
+                    ss.str("");
+                }
+                (*it)->generateDot(level + 1, cont);
+                (*Astnode::dotfile) << this->dotname << " -> " << (*it)->dotname << ";" << endl;
+            }
+        }
     }
-    else {
-      if (this->type == 0)
-        ss << this->name << level << *cont << "[shape=circle,label=\"Integer["<< this->intValue << "]\"];"<< endl;
-      else
-        ss << this->name << level << *cont << "[shape=circle,label=\"Integer["<< this->value << "]\"];"<< endl;
+    else
+    {
+        if (this->getName() == "Id")
+        {
+            ss << this->name << level << *cont << "[shape=circle,label=\"Id("<< this->lexema << ")\"];"<< endl;
+        }
+        else {
+            if (this->type == 0)
+                ss << this->name << level << *cont << "[shape=circle,label=\"Integer("<< this->intValue << ")\"];"<< endl;
+            else
+                ss << this->name << level << *cont << "[shape=circle,label=\"Integer("<< this->value << ")\"];"<< endl;
+        }
+        (*Astnode::dotfile) << ss.str();
+        ss.str("");
+        ss << this->name << level << *cont;
+        this->dotname = ss.str();
+        ss.str("");
     }
-    (*Astnode::dotfile) << ss.str();
-    ss.str("");
-    ss << this->name << level << *cont;
-    this->dotname = ss.str();
-    ss.str("");
-
-  }
 }
 
 void Astnode::printNode(int level)

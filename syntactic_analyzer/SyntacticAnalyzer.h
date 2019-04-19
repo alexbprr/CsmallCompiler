@@ -63,6 +63,7 @@ class SyntacticAnalyzer
   public:
     SyntacticAnalyzer(std::vector<Token*> tokens, LexicalAnalyzer* la);
     SyntacticAnalyzer(std::vector<Token*> tokens);
+    ~SyntacticAnalyzer();
     std::vector<Token*> getTokenVector() const;
     SymbolTable& getSymbolTable() const;
     Astnode& getAstTree() const;

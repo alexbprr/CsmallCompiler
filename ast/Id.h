@@ -7,9 +7,10 @@ using namespace std;
 class Id: public Expr
 {
   public:
-    TableEntry* tableEntryRef;    
+    TableEntry* tableEntryRef;
     Id();
     Id(string name);
+    Id(const Id &id);
     float evaluate();
     void generateCode();
     void generateRValueCode();

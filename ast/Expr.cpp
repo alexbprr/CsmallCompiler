@@ -5,41 +5,41 @@ Expr::Expr(){}
 
 Expr::Expr(string name)
 {
-  this->name = name;
+    this->name = name;
 }
 
 void Expr::printNode(int level)
 {
-  string deslocamento = this->tabs(level);
-  cout << deslocamento <<  "<" << this->name <<" op='" << this->op << "'> " << endl;
-  (*Astnode::ast_file) << deslocamento <<  "<" << this->name <<" op='" << this->op << "'> " << endl;
-  for (vector<Astnode*>::iterator it = this->children.begin(); it != this->children.end(); ++it)
-  {
-      if ((*it) != NULL)
-        (*it)->printNode(level+1);
-  }
-  cout << deslocamento << "</" << this->name << ">" << endl;
-  (*Astnode::ast_file) << deslocamento << "</" << this->name << ">" << endl;
+    string deslocamento = this->tabs(level);
+    cout << deslocamento <<  "<" << this->name <<" op='" << this->op << "'> " << endl;
+    (*Astnode::ast_file) << deslocamento <<  "<" << this->name <<" op='" << this->op << "'> " << endl;
+    for (vector<Astnode*>::iterator it = this->children.begin(); it != this->children.end(); ++it)
+    {
+        if ((*it) != NULL)
+            (*it)->printNode(level+1);
+    }
+    cout << deslocamento << "</" << this->name << ">" << endl;
+    (*Astnode::ast_file) << deslocamento << "</" << this->name << ">" << endl;
 }
 
 string Expr::generateBranches(string test)
 {
-  string s;
-  Label* trueLabel = new Label();
-  Label* nextLabel = new Label();
+    string s;
+    Label* trueLabel = new Label();
+    Label* nextLabel = new Label();
 
-  Temp* temp = new Temp();
-  this->address = new Operand();
-  this->address->setTemporary(temp);
-  this->address->setName(temp->getName());
+    Temp* temp = new Temp();
+    this->address = new Operand();
+    this->address->setTemporary(temp);
+    this->address->setName(temp->getName());
   //if (this->true_label->getName() != "fall" && this->false_label->getName() != "fall")
   //{
-  (*Astnode::tac_file) << "if " << test << " goto " <<  trueLabel->getName();
-  (*Astnode::tac_file) << temp->name << " =  0" << endl;
-  (*Astnode::tac_file) << "goto " <<  nextLabel << endl;
-  (*Astnode::tac_file) << trueLabel->getName() << ":";
-  (*Astnode::tac_file) << temp->name << " =  1" << endl;
-  (*Astnode::tac_file) << nextLabel->getName() << ":";
+    (*Astnode::tac_file) << "if " << test << " goto " <<  trueLabel->getName();
+    (*Astnode::tac_file) << temp->name << " =  0" << endl;
+    (*Astnode::tac_file) << "goto " <<  nextLabel << endl;
+    (*Astnode::tac_file) << trueLabel->getName() << ":";
+    (*Astnode::tac_file) << temp->name << " =  1" << endl;
+    (*Astnode::tac_file) << nextLabel->getName() << ":";
   //}
   // else if (this->true_label->getName() != "fall")
   //   s = "if " + test + " goto " +  this->true_label->getName() + "\n";
@@ -48,7 +48,7 @@ string Expr::generateBranches(string test)
   //   cout << "true label == fall" << endl;
   //   s = "ifnot " + test + " goto " +  this->false_label->getName() + "\n";
   // }
-  return s;
+    return s;
 }
 
 // void Expr::generateRValueCode()
@@ -70,6 +70,8 @@ string Expr::generateBranches(string test)
 
 void Expr::generatePythonCode(int level)
 {
+    if (this->children.at(0) == NULL || this->children.at(1) == NULL)
+        return;
     this->children.at(0)->generatePythonCode(level);
     (*Astnode::pythonfile) << " " << this->op << " ";
     this->children.at(1)->generatePythonCode(level);

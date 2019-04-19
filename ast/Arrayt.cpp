@@ -3,6 +3,6 @@ using namespace std;
 
 Arrayt::Arrayt(int dim, void *type)
 {
-  this->dim = dim;
-  this->type = type;
+    this->dim = dim;
+    this->type = type;
 }

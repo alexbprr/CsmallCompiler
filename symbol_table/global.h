@@ -4,12 +4,27 @@
 using namespace std;
 #include <iostream>
 #include <string>
+#include <algorithm>
 
-#define N 33 //number of tokens
+#define N 37 //number of tokens
+
+//Criar classe Global with enumeration
+
+// enum tokens
+// {   ID = 0,
+//     INT = 1,
+//     MAIN = 2,
+//     FLOAT = 3,
+
+// };
+
+// enum types { int 1, float 2, char 3, void 4}
 
 ///Tipos de dados permitidos na linguagem
 #define INT_     1
 #define FLOAT_   2
+#define CHAR_    3
+#define VOID_ 4
 
 ///Tokens da linguagem
 #define ID  0
@@ -45,5 +60,9 @@ using namespace std;
 #define FOR 30
 #define LCOL 31
 #define RCOL 32
+#define CHAR 33
+#define VOID 34
+#define INC 35
+#define DEC 36
 
 #endif

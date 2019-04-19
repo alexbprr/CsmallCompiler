@@ -10,13 +10,16 @@ For::For(string name)
 
 float For::evaluate()
 {
-    this->children[0]->evaluate();
+    if (this->children.at(0) == NULL || this->children.at(1) == NULL || this->children.at(2) == NULL
+        || this->children.at(3) == NULL)
+        return 0;
+    this->children.at(0)->evaluate();
     int i = 0;
-    while(this->children[1]->evaluate() != 0)
+    while(this->children.at(1)->evaluate() != 0)
     {
-        this->children[3]->evaluate();
-        this->children[2]->evaluate();
-        if (i == 100000)
+        this->children.at(3)->evaluate();
+        this->children.at(2)->evaluate();
+        if (i == 1000000)
             break;
         i++;
     }
@@ -29,13 +32,16 @@ void For::generateCode()
 
 void For::generatePythonCode(int level)
 {
-  (*Astnode::pythonfile) << pythonTab(level);
-  this->children[0]->generatePythonCode(level); //Gera código para inicialização
-  (*Astnode::pythonfile) << "while ";
-  this->children[1]->generatePythonCode(level); //Gera código para a expressão
-  (*Astnode::pythonfile) << ":\n";
-  this->children[3]->generatePythonCode(level+1);//Gera código para o comando
-  this->children[2]->generatePythonCode(level+1);//Gera código para o incremento
+    if (this->children.at(0) == NULL || this->children.at(1) == NULL || this->children.at(2) == NULL
+        || this->children.at(3) == NULL)
+        return;
+    (*Astnode::pythonfile) << pythonTab(level);
+    this->children[0]->generatePythonCode(level); //Gera código para inicialização
+    (*Astnode::pythonfile) << "while ";
+    this->children[1]->generatePythonCode(level); //Gera código para a expressão
+    (*Astnode::pythonfile) << ":\n";
+    this->children[3]->generatePythonCode(level+1);//Gera código para o comando
+    this->children[2]->generatePythonCode(level+1);//Gera código para o incremento
   // (*Astnode::pythonfile) << "for ";
   // //O valor inicial do for é o lado direito da 1ª atribuição. Criar uma variável que não foi definida no código
   // string vars[6] = {"i","j","k","l","m","n"};

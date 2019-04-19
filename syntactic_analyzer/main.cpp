@@ -28,6 +28,7 @@ int main(int argc, char* argv[])
     LexicalAnalyzer::setLexicalFile(&lex_file);
     la->saveTokenBuffer();
     lex_file.close();
+    cout << "Tokens file generated" << endl;
     //SyntacticAnalyzer* synAnalyzer = new SyntacticAnalyzer(la->tokens, la->tokensNames);
     SyntacticAnalyzer* synAnalyzer = new SyntacticAnalyzer(la->getTokenVector(), la);
     synAnalyzer->Programa();
@@ -39,6 +40,7 @@ int main(int argc, char* argv[])
     Astnode::setAstFile(&ast_file);
     synAnalyzer->getAstTree().printNode(0); //Print AST
     ast_file.close();
+    cout << "Ast file generated" << endl;
 
     //Generate Dot file
     ofstream dotfile;
@@ -50,15 +52,18 @@ int main(int argc, char* argv[])
     synAnalyzer->getAstTree().generateDot(0,&cont);
     dotfile << "}" << endl;
     dotfile.close();
+    cout << "Dot file generated" << endl;
 
     //Generate the svg image
     string svgfilename = "DotFiles/" + string(fileName) + ".svg";
     string com = "dot -Tsvg " + dotfilename + " > " + svgfilename;
     system(com.c_str());
+    cout << "Svg image generated" << endl;
 
     synAnalyzer->getAstTree().evaluate(); //Call the interpreter
     synAnalyzer->getSymbolTable().printSymbolTable(); //Print the symbol table
     synAnalyzer->getSymbolTable().saveSymbolTable();
+    cout << "Symbol table file generated" << endl;
 
     string tac_filename = "TacFiles/three_address_code_" + string(fileName) + ".txt";
     ofstream tac_file;
@@ -66,6 +71,7 @@ int main(int argc, char* argv[])
     Astnode::setTacFile(&tac_file);
     synAnalyzer->getAstTree().generateCode(); //Chama o gerador de código de três endereços
     tac_file.close();
+    cout << "Three address code file generated" << endl;
 
     string pythonfilename = "PythonFiles/pythoncode_" + string(fileName) + ".py";
     ofstream pythonfile;
@@ -74,8 +80,10 @@ int main(int argc, char* argv[])
     pythonfile << "#!/usr/bin/env python3\n# -*- coding: utf-8 -*-\n";
     synAnalyzer->getAstTree().generatePythonCode(0);
     pythonfile.close();
+    cout << "Python file generated" << endl;
 
-    free(la);
-    free(synAnalyzer);
+    delete io;
+    delete la;
+    delete synAnalyzer;
     return 0;
 }

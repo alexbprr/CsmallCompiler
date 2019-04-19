@@ -7,6 +7,7 @@ using namespace std;
 SymbolTable::SymbolTable()
 {
   tokensNames[FOR] = "FOR";
+  tokensNames[CHAR] = "CHAR";
   tokensNames[MAIN] = "MAIN";
   tokensNames[ID] = "ID";
   tokensNames[INT] = "INT";

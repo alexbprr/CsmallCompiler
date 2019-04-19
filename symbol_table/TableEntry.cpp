@@ -28,30 +28,34 @@ TableEntry::~TableEntry()
 
 string TableEntry::getLexema()
 {
-  return this->lexema;
+    return this->lexema;
 }
 
 string TableEntry::getTypeName()
 {
-  if (this->type == 0)
-    return "integer";
-  else if (this->type == 1)
-    return "float";
-  else
-    return "unknown type";
+    if (this->type == INT_)
+        return "integer";
+    else if (this->type == FLOAT_)
+        return "float";
+    else if (this->type == CHAR_)
+        return "char";
+    else if (this->type == VOID_)
+        return "void";
+    else
+        return "unknown type";
 }
 
 float TableEntry::getValue()
 {
-  return this->value;
+    return this->value;
 }
 
 int TableEntry::getLineNumber()
 {
-  return this->lineNumber;
+    return this->lineNumber;
 }
 
 void TableEntry::setValue(float value)
 {
-  this->value = value;
+    this->value = value;
 }
