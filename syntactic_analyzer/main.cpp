@@ -65,7 +65,7 @@ int main(int argc, char* argv[])
     synAnalyzer->getSymbolTable().saveSymbolTable();
     cout << "Symbol table file generated" << endl;
 
-    string tac_filename = "TacFiles/three_address_code_" + string(fileName) + ".txt";
+    string tac_filename = "TacFiles/tac_" + string(fileName) + ".txt";
     ofstream tac_file;
     tac_file.open(tac_filename.c_str());
     Astnode::setTacFile(&tac_file);

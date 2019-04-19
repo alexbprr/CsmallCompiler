@@ -57,14 +57,19 @@ void SyntacticAnalyzer::match(int expectedToken)
     else
     {
         if (this->la->getLexema(expectedToken) != "")
-        cout << "\033[1;31merror: \033[0m \033[1;33mline " << this->tokens.at(i)->getLineNumber() << ":\033[0m " <<
+        {
+            cout << "\033[1;31merror: \033[0m \033[1;33mline " << this->tokens.at(i)->getLineNumber() << ":\033[0m " <<
             this->la->getLexema(expectedToken) << " expected." << endl;
+            error_file << "error: line: " << this->tokens.at(i)->getLineNumber() << " " <<
+                this->la->getLexema(expectedToken) << " expected" << endl;
+        }
         else
+        {
             cout << "\033[1;31merror: \033[0m \033[1;33mline " << this->tokens.at(i)->getLineNumber() << ":\033[0m " <<
                 this->la->getTokensNames()[expectedToken] << " expected." << endl;
-        error_file << "error: line: " << this->tokens.at(i)->getLineNumber() << " " <<
-        this->la->getTokensNames()[expectedToken]
-         << " expected" << endl;
+            error_file << "error: line: " << this->tokens.at(i)->getLineNumber() << " " <<
+                this->la->getTokensNames()[expectedToken] << " expected" << endl;
+        }
     }
 }
 
@@ -131,6 +136,8 @@ void SyntacticAnalyzer::Declaracao(vector<Astnode*> *nodeList)
         match(ID);
         Decl2(nodeList);
     }
+    else
+        error_file << "error: line: " << this->tokens.at(i)->getLineNumber() << " identifier expected" << endl;
 }
 
 void SyntacticAnalyzer::Tipo()
@@ -176,7 +183,10 @@ void SyntacticAnalyzer::Decl2(vector<Astnode*> *nodeList)
             Decl2(nodeList);
         }
         else
+        {
             error_file << "error: line: " << this->tokens.at(i)->getLineNumber() << " identifier expected" << endl;
+            //Decl2(nodeList);
+        }
     }
     else if (this->tokens.at(i)->getTokenConstant() == PCOMMA)
     {
