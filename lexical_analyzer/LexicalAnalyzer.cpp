@@ -91,7 +91,7 @@ std::string* LexicalAnalyzer::getTokensNames() const
     return this->tokensNames;
 }
 
-std::string LexicalAnalyzer::getLexema(const int &key) 
+std::string LexicalAnalyzer::getLexema(const int &key)
 {
     // map<int,std::string>::iterator it;
     // it = this->lexemaNames.find(key);
@@ -290,6 +290,7 @@ void LexicalAnalyzer::analyze()
                 token = new Token("DIV", lineNumber, DIV, "/");
                 tokens.push_back(token);
                 state = 1;
+                //state = 7;
             }
             else
             if(c == '\n')

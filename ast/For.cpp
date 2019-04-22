@@ -35,8 +35,9 @@ void For::generatePythonCode(int level)
     if (this->children.at(0) == NULL || this->children.at(1) == NULL || this->children.at(2) == NULL
         || this->children.at(3) == NULL)
         return;
-    (*Astnode::pythonfile) << pythonTab(level);
+    //(*Astnode::pythonfile) << pythonTab(level);
     this->children[0]->generatePythonCode(level); //Gera código para inicialização
+    (*Astnode::pythonfile) << pythonTab(level);
     (*Astnode::pythonfile) << "while ";
     this->children[1]->generatePythonCode(level); //Gera código para a expressão
     (*Astnode::pythonfile) << ":\n";

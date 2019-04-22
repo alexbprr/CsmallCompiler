@@ -67,7 +67,7 @@ void SyntacticAnalyzer::match(int expectedToken)
         {
             cout << "\033[1;31merror: \033[0m \033[1;33mline " << this->tokens.at(i)->getLineNumber() << ":\033[0m " <<
                 this->la->getTokensNames()[expectedToken] << " expected." << endl;
-            error_file << "error: line: " << this->tokens.at(i)->getLineNumber() << " " <<
+            error_file << "error: line " << this->tokens.at(i)->getLineNumber() << ": " <<
                 this->la->getTokensNames()[expectedToken] << " expected" << endl;
         }
     }
@@ -129,15 +129,33 @@ void SyntacticAnalyzer::Declaracao(vector<Astnode*> *nodeList)
         TableEntry* new_entry = this->symbolTable->insertEntry(this->tokens.at(i)->getLexema(), this->tokens.at(i)->getTokenConstant(),
         this->tokens.at(i)->getLineNumber(), this->currentType);
         if (new_entry == NULL)
-            error_file << "error: line: " << this->tokens.at(i)->getLineNumber() << \
-        " identifier " << this->tokens.at(i)->getLexema() << " redeclared" << endl;
+            error_file << "error: line " << this->tokens.at(i)->getLineNumber() << \
+        ": identifier " << this->tokens.at(i)->getLexema() << " redeclared" << endl;
         //else
         this->currentIdNode->tableEntryRef = this->symbolTable->getTableEntry(this->tokens.at(i)->getLexema());
         match(ID);
+        if (this->tokens.at(i)->getTokenConstant() == LCOL)
+        {
+            match(LCOL);
+            int dim = atoi(this->tokens.at(i)->getLexema().c_str());
+            //Num* numnode = new Num("Num", this->tokens.at(i)->getLexema(), this->currentType);
+            Expr* e = Expressao();
+            //match(INTEGER_CONST);
+            match(RCOL);
+            Arrayt *arrayt = new Arrayt(dim,&this->currentType);
+            Array* array = new Array();
+            array->isDecl = true;
+            array->indices.push_back(e);
+            this->currentIdNode->tableEntryRef->arrayt = (Arrayt*) arrayt;
+            array->id = this->currentIdNode;
+            (*nodeList).push_back(array);
+            //chama Decl2
+            L(nodeList, arrayt, array);
+        }
         Decl2(nodeList);
     }
     else
-        error_file << "error: line: " << this->tokens.at(i)->getLineNumber() << " identifier expected" << endl;
+        error_file << "error: line " << this->tokens.at(i)->getLineNumber() << ": identifier expected" << endl;
 }
 
 void SyntacticAnalyzer::Tipo()
@@ -172,19 +190,37 @@ void SyntacticAnalyzer::Decl2(vector<Astnode*> *nodeList)
                                         this->tokens.at(i)->getLineNumber(), this->currentType);
             if (new_entry == NULL)
             {
-                error_file << "error: line: " << this->tokens.at(i)->getLineNumber() << \
-            " identifier " << this->tokens.at(i)->getLexema() << " redeclared" << endl;
+                error_file << "error: line " << this->tokens.at(i)->getLineNumber() << \
+            ": identifier " << this->tokens.at(i)->getLexema() << " redeclared" << endl;
                 //Aponta para a entrada da tabela já existente
                 this->currentIdNode->tableEntryRef = this->symbolTable->getTableEntry(this->tokens.at(i)->getLexema());
             }
             else
                 this->currentIdNode->tableEntryRef = new_entry;
             match(ID);
+            if (this->tokens.at(i)->getTokenConstant() == LCOL)
+            {
+                match(LCOL);
+                int dim = atoi(this->tokens.at(i)->getLexema().c_str());
+                //Num* numnode = new Num("Num", this->tokens.at(i)->getLexema(), this->currentType);
+                Expr* e = Expressao();
+                //match(INTEGER_CONST);
+                match(RCOL);
+                Arrayt *arrayt = new Arrayt(dim,&this->currentType);
+                Array* array = new Array();
+                array->isDecl = true;
+                array->indices.push_back(e);
+                this->currentIdNode->tableEntryRef->arrayt = (Arrayt*) arrayt;
+                array->id = this->currentIdNode;
+                (*nodeList).push_back(array);
+                //chama Decl2
+                L(nodeList, arrayt, array);
+            }
             Decl2(nodeList);
         }
         else
         {
-            error_file << "error: line: " << this->tokens.at(i)->getLineNumber() << " identifier expected" << endl;
+            error_file << "error: line " << this->tokens.at(i)->getLineNumber() << ": identifier expected" << endl;
             //Decl2(nodeList);
         }
     }
@@ -204,24 +240,8 @@ void SyntacticAnalyzer::Decl2(vector<Astnode*> *nodeList)
         (*nodeList).push_back(attr_node);
         Decl2(nodeList);
     }
-    else if (this->tokens.at(i)->getTokenConstant() == LCOL)
-    {
-        match(LCOL);
-        int dim = atoi(this->tokens.at(i)->getLexema().c_str());
-        //Num* numnode = new Num("Num", this->tokens.at(i)->getLexema(), this->currentType);
-        Expr* e = Expressao();
-        //match(INTEGER_CONST);
-        match(RCOL);
-        Arrayt *arrayt = new Arrayt(dim,&this->currentType);
-        Array* array = new Array();
-        array->isDecl = true;
-        array->indices.push_back(e);
-        //chama Decl2
-        L(nodeList, arrayt, array);
-        Decl2(nodeList);
-    }
     else
-        error_file << "error: line: " << this->tokens.at(i)->getLineNumber() << " identifier, ,, ; or [ expected" << endl;
+        error_file << "error: line " << this->tokens.at(i)->getLineNumber() << ": identifier, ,, ; or [ expected" << endl;
 }
 
 //Acrescentar COMMA na função L
@@ -237,11 +257,11 @@ void SyntacticAnalyzer::L(vector<Astnode*> *nodeList, void* arrayt, Array* array
         match(RCOL);
         Arrayt *arrayt = new Arrayt(dim,arrayt);
         array->indices.push_back(e);
+        this->currentIdNode->tableEntryRef->arrayt = (Arrayt*) arrayt;
+        //array->id = this->currentIdNode;
+        (*nodeList).push_back(array);
         L(nodeList,arrayt, array);
     }
-    this->currentIdNode->tableEntryRef->arrayt = (Arrayt*) arrayt;
-    array->id = this->currentIdNode;
-    (*nodeList).push_back(array);
     // else if (this->tokens.at(i)->getTokenConstant() == PCOMMA)
     // {
     //     //Cria um nó Array passando o nó Id e a expressão de tipo
@@ -275,7 +295,7 @@ void SyntacticAnalyzer::Comando(vector<Astnode*> *nodeList)
         id_node->tableEntryRef = this->symbolTable->getTableEntry(this->tokens.at(i)->getLexema());
         id_node->lexema = this->tokens.at(i)->getLexema();
         if (id_node->tableEntryRef == NULL)
-            error_file << "error: line: " << this->tokens.at(i)->getLineNumber() << " identifier " << \
+            error_file << "error: line " << this->tokens.at(i)->getLineNumber() << ": identifier " << \
              this->tokens.at(i)->getLexema() << " not declared" << endl;
         match(ID);
         if (this->tokens.at(i)->getTokenConstant() == LCOL)
@@ -374,11 +394,25 @@ void SyntacticAnalyzer::AtribuicaoFor(vector<Astnode*> *nodeList)
     id_node->tableEntryRef = this->symbolTable->getTableEntry(this->tokens.at(i)->getLexema());
     id_node->lexema = this->tokens.at(i)->getLexema();
     if (id_node->tableEntryRef == NULL)
-        error_file << "error: line: " << this->tokens.at(i)->getLineNumber() << " identifier " << \
+        error_file << "error: line " << this->tokens.at(i)->getLineNumber() << ": identifier " << \
      this->tokens.at(i)->getLexema() << " not declared" << endl;
     match(ID);
-    match(ATTR);
-    Expr* expr = Expressao();
+    Expr* expr;
+    if (this->tokens.at(i)->getTokenConstant() == ATTR)
+    {
+        match(ATTR);
+        expr = Expressao();
+    }
+    else if (this->tokens.at(i)->getTokenConstant() == INC)
+    {
+        match(INC);
+        //Translate to ArithOp
+    }
+    else if (this->tokens.at(i)->getTokenConstant() == DEC)
+    {
+        match(DEC);
+        //Translate to ArithOp
+    }
     Attr* attr_node = new Attr("Attr", id_node, expr);
     (*nodeList).push_back(attr_node);
 }
@@ -602,7 +636,7 @@ Expr* SyntacticAnalyzer::Fator()
             id_node->tableEntryRef = this->symbolTable->getTableEntry(this->tokens.at(i)->getLexema());
             id_node->lexema = this->tokens.at(i)->getLexema();
             if (id_node->tableEntryRef == NULL)
-                error_file << "error: line: " << this->tokens.at(i)->getLineNumber() << " identifier " << \
+                error_file << "error: line " << this->tokens.at(i)->getLineNumber() << ": identifier " << \
                 this->tokens.at(i)->getLexema() << " not declared" << endl;
             match(ID);
             return id_node;
@@ -614,7 +648,7 @@ Expr* SyntacticAnalyzer::Fator()
         id_node->tableEntryRef = this->symbolTable->getTableEntry(this->tokens.at(i)->getLexema());
         id_node->lexema = this->tokens.at(i)->getLexema();
         if (id_node->tableEntryRef == NULL)
-            error_file << "error: line: " << this->tokens.at(i)->getLineNumber() << " identifier " << \
+            error_file << "error: line " << this->tokens.at(i)->getLineNumber() << ": identifier " << \
             this->tokens.at(i)->getLexema() << " not declared" << endl;
         match(ID);
         if (this->tokens.at(i)->getTokenConstant() == LCOL)
@@ -660,7 +694,7 @@ Expr* SyntacticAnalyzer::Fator()
     {
         cout << "Erro sintático. Identificador, abre parênteses ou contante numérica esperada na linha " <<
             this->tokens.at(i)->getLineNumber() << "." << endl;
-        error_file << "error: line: " << this->tokens.at(i)->getLineNumber() << " identifier, integer const, float const or ( " << \
+        error_file << "error: line " << this->tokens.at(i)->getLineNumber() << ": identifier, integer const, float const or ( " << \
                  " expected" << endl;
         return NULL;
     }

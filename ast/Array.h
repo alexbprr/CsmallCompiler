@@ -7,7 +7,8 @@ using namespace std;
 
 class Array: public Expr
 {
-  public:
+public:
+    vector<Expr*> indices;
     Id* id;
     Arrayt* arrayt;
     bool isDecl;
