@@ -259,9 +259,9 @@ void SyntacticAnalyzer::L(vector<Astnode*> *nodeList, void* arrayt, Array* array
         array->indices.push_back(e);
         this->currentIdNode->tableEntryRef->arrayt = (Arrayt*) arrayt;
         //array->id = this->currentIdNode;
-        (*nodeList).push_back(array);
         L(nodeList,arrayt, array);
     }
+    (*nodeList).push_back(array);
     // else if (this->tokens.at(i)->getTokenConstant() == PCOMMA)
     // {
     //     //Cria um nó Array passando o nó Id e a expressão de tipo
@@ -300,16 +300,17 @@ void SyntacticAnalyzer::Comando(vector<Astnode*> *nodeList)
         match(ID);
         if (this->tokens.at(i)->getTokenConstant() == LCOL)
         {
+            match(LCOL);
             int dim = atoi(this->tokens.at(i)->getLexema().c_str());
-            Num* numnode = new Num("Num", this->tokens.at(i)->getLexema(), this->currentType);
-            match(INTEGER_CONST);
+            //Num* numnode = new Num("Num", this->tokens.at(i)->getLexema(), this->currentType);
+            Array* array = new Array("Array", id_node, id_node->tableEntryRef->arrayt);
+            //Arrayt *arrayt = new Arrayt(dim,arrayt);
+            Arrayt *arrayt = new Arrayt(dim,NULL);
+            Expr* e = Indice();
             match(RCOL);
-            Arrayt *arrayt = new Arrayt(dim,arrayt);
-            Array* array = new Array();
-            array->indices.push_back(numnode);
+            array->indices.push_back(e);
             L(nodeList,arrayt, array);
         }
-        //Verificar se tem [
         match(ATTR);
         Expr* expr = Expressao();
         Attr* attr_node = new Attr("Attr", id_node, expr);
