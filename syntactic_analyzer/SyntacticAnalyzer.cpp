@@ -49,8 +49,8 @@ void SyntacticAnalyzer::match(int expectedToken)
             i++;
         else
         {
-            cout << "\033[1;31merror: \033[0m end of input reached." << endl;
-            error_file << "error: end of input reached." << endl;
+            //cout << "\033[1;31merror: \033[0m end of input reached." << endl;
+            //error_file << "error: end of input reached." << endl;
             //exit(1);
         }
     }
@@ -60,7 +60,7 @@ void SyntacticAnalyzer::match(int expectedToken)
         {
             cout << "\033[1;31merror: \033[0m \033[1;33mline " << this->tokens.at(i)->getLineNumber() << ":\033[0m " <<
             this->la->getLexema(expectedToken) << " expected." << endl;
-            error_file << "error: line: " << this->tokens.at(i)->getLineNumber() << " " <<
+            error_file << "error: line " << this->tokens.at(i)->getLineNumber() << ": " <<
                 this->la->getLexema(expectedToken) << " expected" << endl;
         }
         else
@@ -382,6 +382,11 @@ void SyntacticAnalyzer::Comando(vector<Astnode*> *nodeList)
     }
     else
     {
+        error_file << "error: line " << this->tokens.at(i)->getLineNumber() << ": " <<
+            "{, identifier, if, while, for, print or read expected" << endl;
+        cout << "error: line " << this->tokens.at(i)->getLineNumber() << ": " <<
+                "{, identifier, if, while, for, print or read expected" << endl;
+        //Anda na entrada e retorna para Decl_Comando
         if (i < this->tokens.size())
             i++;
       //Anda na entrada até encontrar um Comando?
