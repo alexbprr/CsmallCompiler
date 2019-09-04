@@ -26,6 +26,7 @@ class TableEntry
         int intValue;
         float value;
         Arrayt* arrayt;
+        bool isvar; //Indica se é uma variável ou parâmetro
 
         TableEntry();
         TableEntry(string lexema, int token, int lineNumber);
@@ -34,6 +35,7 @@ class TableEntry
         string getTypeName();
         float getValue();
         void setValue(float value);
+        void setIsVar(bool isvar);
         int getLineNumber();
         virtual ~TableEntry();
 };

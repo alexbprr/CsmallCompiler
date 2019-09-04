@@ -1,0 +1,7 @@
+vars u, v, n1, n2
+params r, m, w11, w22
+ini
+u = 3;
+;
+u = r*(1 - w11*u - w22*v);
+v = m*23 - u;

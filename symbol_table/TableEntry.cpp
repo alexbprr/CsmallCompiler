@@ -59,3 +59,8 @@ void TableEntry::setValue(float value)
 {
     this->value = value;
 }
+
+void TableEntry::setIsVar(bool isvar)
+{
+    this->isvar = isvar;
+}

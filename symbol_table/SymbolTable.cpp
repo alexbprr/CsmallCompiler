@@ -5,40 +5,10 @@
 using namespace std;
 
 SymbolTable::SymbolTable()
-{
-  tokensNames[FOR] = "FOR";
-  tokensNames[CHAR] = "CHAR";
-  tokensNames[MAIN] = "MAIN";
-  tokensNames[ID] = "ID";
-  tokensNames[INT] = "INT";
-  tokensNames[FLOAT] = "FLOAT";
-  tokensNames[IF] = "IF";
-  tokensNames[ELSE] = "ELSE";
-  tokensNames[WHILE] = "WHILE";
-  tokensNames[READ] = "READ";
-  tokensNames[PRINT] = "PRINT";
-  tokensNames[LBRACE] = "LBRACE";
-  tokensNames[RBRACE] = "RBRACE";
-  tokensNames[COMMA] = "COMMA";
-  tokensNames[PCOMMA] = "PCOMMA";
-  tokensNames[LBRACKET] = "LBRACKET";
-  tokensNames[RBRACKET] = "RBRACKET";
-  tokensNames[ATTR] = "ATTR";
-  tokensNames[OR] = "OR";
-  tokensNames[AND] = "AND";
-  tokensNames[EQ] = "EQ";
-  tokensNames[NE] = "NE";
-  tokensNames[LT] = "LT";
-  tokensNames[LE] = "LE";
-  tokensNames[GT] = "GT";
-  tokensNames[GE] = "GE";
-  tokensNames[PLUS] = "PLUS";
-  tokensNames[MINUS] = "MINUS";
-  tokensNames[MULT] = "MULT";
-  tokensNames[DIV] = "DIV";
-  tokensNames[INTEGER_CONST] = "INTEGER_CONST";
-  tokensNames[FLOAT_CONST] = "FLOAT_CONST";
-}
+{}
+
+SymbolTable::~SymbolTable()
+{}
 
 TableEntry* SymbolTable::insertEntry(string lexema, int token, int lineNumber)
 {
@@ -84,11 +54,12 @@ void SymbolTable::printSymbolTable()
     {
         cout << i << ":  ";
         entry = (TableEntry*) it->second;
-        cout << "token: " << tokensNames[entry->tokenType]
-        << ", lexema: " << entry->getLexema()
+        cout << ", lexema: " << entry->getLexema()
         << ", tipo: " << entry->getTypeName()
         << ", valor: " << entry->getValue()
-        << ", line number: " << entry->getLineNumber() << endl;
+        << ", line number: " << entry->getLineNumber()
+        << ", isvar: " << entry->isvar 
+        << endl;
         i++;
     }
     cout << "---------------------------------" <<endl;
@@ -106,8 +77,7 @@ void SymbolTable::saveSymbolTable()
     {
         symboltablefile << i << ":  ";
         entry = (TableEntry*) it->second;
-        symboltablefile << "token: " << tokensNames[entry->tokenType]
-        << ", lexema: " << entry->getLexema()
+        symboltablefile << ", lexema: " << entry->getLexema()
         << ", tipo: " << entry->getTypeName()
         << ", valor: " << entry->getValue()
         << ", line number: " << entry->getLineNumber() << endl;

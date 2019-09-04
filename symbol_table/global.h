@@ -6,7 +6,7 @@ using namespace std;
 #include <string>
 #include <algorithm>
 
-#define N 37 //number of tokens
+#define N 100 //number of tokens
 
 //Criar classe Global with enumeration
 
@@ -64,5 +64,13 @@ using namespace std;
 #define VOID 34
 #define INC 35
 #define DEC 36
+#define NUM 37
+
+#define VARS 38
+#define PARAMS 39
+#define INI 40
+#define TO 41
+#define DIFF 42 //'
+#define D 43 //d
 
 #endif

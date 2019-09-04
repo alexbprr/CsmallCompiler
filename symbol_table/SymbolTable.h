@@ -15,6 +15,7 @@ class SymbolTable{
         std::string tokensNames[N];
     public:
         SymbolTable();
+        virtual ~SymbolTable();
         map<string, TableEntry*> getSymbolTable() const;
         void printSymbolTable();
         void saveSymbolTable();

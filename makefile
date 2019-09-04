@@ -1,7 +1,7 @@
 CC        := g++
 LD        := g++
 
-MODULES   := lexical_analyzer symbol_table ast syntactic_analyzer intermediate_code
+MODULES   := lexical_analyzer symbol_table ast syntactic_analyzer intermediate_code odemodel
 SRC_DIR   := $(addprefix ,$(MODULES))
 BUILD_DIR := $(addprefix build/,$(MODULES))
 
