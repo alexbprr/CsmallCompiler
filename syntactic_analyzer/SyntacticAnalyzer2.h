@@ -51,8 +51,8 @@ class SyntacticAnalyzer2
     Odemodel* S();
     void ListaNomes(bool isvar);
     void ListaNomes2(bool isvar);
-    void ListaEq();
-    void ListaEq2();
+    void ListaEq(bool isini);
+    void ListaEq2(bool isini);
     Term* Eq();
     Term* ListaT(char t_sig);
     Term* ListaT2(Term* t);

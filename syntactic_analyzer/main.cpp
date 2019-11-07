@@ -34,9 +34,11 @@ int main(int argc, char* argv[])
     cout << "Tokens file generated" << endl;
 
     //SyntacticAnalyzer* synAnalyzer = new SyntacticAnalyzer(la->tokens, la->tokensNames);
-    SyntacticAnalyzer2* synAnalyzer = new SyntacticAnalyzer2(la->getTokenVector(), la);
-    synAnalyzer->S();
-    synAnalyzer->getSymbolTable().printSymbolTable();
+    SyntacticAnalyzer2* synAnalyzer2 = new SyntacticAnalyzer2(la->getTokenVector(), la);
+    Odemodel* ode = synAnalyzer2->S();
+    if (ode != NULL)
+        ode->printOdeModel();
+    synAnalyzer2->getSymbolTable().printSymbolTable();
 
     // string ast_filename = "AstFiles/ast_" + string(fileName) + ".txt";
     // ofstream ast_file;
@@ -88,6 +90,7 @@ int main(int argc, char* argv[])
 
     delete io;
     delete la;
-    delete synAnalyzer;
+    delete synAnalyzer2;
+    delete ode;
     return 0;
 }

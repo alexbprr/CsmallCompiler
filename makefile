@@ -21,7 +21,7 @@ endef
 all: checkdirs build/compiler
 
 build/compiler: $(OBJ)
-	$(LD) $^ -o $@
+	$(LD) $^ -o $@ -g
 
 checkdirs: $(BUILD_DIR)
 

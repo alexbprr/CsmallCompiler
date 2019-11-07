@@ -18,8 +18,10 @@ private:
     char type; //parâmetro, variável, função
     double value;
     std::string repr;
+    string tabs(int level);
 
 public:
+    //Create copy constructor
     Term();
     string getTName();
     Term* getLeft();
@@ -32,6 +34,7 @@ public:
     void setType(char type);
     void setRepr(std::string r);
     void generateRCode();
+    void print(int level);
 };
 
 
@@ -52,11 +55,13 @@ public:
 class Odemodel
 {
 private:
+
+public:
     std::map<std::string, Equation* > initialization; //Equações de inicialização
     std::map<std::string, Equation* > equations;  //Cada variável está associada a uma equação //Conjunto dos lados direitos das EDOs
 
-public:
-
+    vector<string> varNames;
+    vector<string> paramNames;
     Odemodel();
     ~Odemodel();
     void addEquation(Equation* eq);

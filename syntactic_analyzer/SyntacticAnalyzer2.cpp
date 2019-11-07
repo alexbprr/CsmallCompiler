@@ -91,10 +91,10 @@ Odemodel* SyntacticAnalyzer2::S()
         match(PARAMS);
         ListaNomes(false);
         match(INI);
-        ListaEq();
+        ListaEq(true);
         match(PCOMMA);
-        ListaEq();
-        if(this->tokens.at(i)->getTokenConstant() == EOF)
+        ListaEq(false);
+        //if(this->tokens.at(i)->getTokenConstant() == EOF)
         {
             cout << "Fim da análise sintática." << endl;
             //odeCodeFile << this->code;
@@ -102,13 +102,8 @@ Odemodel* SyntacticAnalyzer2::S()
             odeCodeFile.close();
             return this->ode;
         }
+
     }
-    // else
-    // {
-    //     cout << "\033[1;31merror: \033[0m \033[1;33mline " << this->tokens.at(i)->getLineNumber() << ":\033[0m " << "eof not recognized at the end of input." << endl;
-    //     //cout << "Token EOF não reconhecido no final da entrada." << endl;
-    //     error_file.close();
-    // }
     return NULL;
 }
 
@@ -119,9 +114,9 @@ void SyntacticAnalyzer2::ListaNomes(bool isvar)
         TableEntry* ne = this->symbolTable->insertEntry(this->tokens.at(i)->getLexema(), this->tokens.at(i)->getTokenConstant(), 0);
         ne->setIsVar(isvar);
         if (isvar)
-        {
-            std::string varname = this->tokens.at(i)->getLexema();
-        }
+            this->ode->varNames.push_back(this->tokens.at(i)->getLexema());
+        else
+            this->ode->paramNames.push_back(this->tokens.at(i)->getLexema());
         match(ID);
         ListaNomes2(isvar);
     }
@@ -134,57 +129,91 @@ void SyntacticAnalyzer2::ListaNomes2(bool isvar)
         match(COMMA);
         TableEntry* ne = this->symbolTable->insertEntry(this->tokens.at(i)->getLexema(), this->tokens.at(i)->getTokenConstant(), 0);
         ne->setIsVar(isvar);
+        if (isvar)
+            this->ode->varNames.push_back(this->tokens.at(i)->getLexema());
+        else
+            this->ode->paramNames.push_back(this->tokens.at(i)->getLexema());
         match(ID);
         ListaNomes2(isvar);
     }
 }
 
-//ListaEq -> id =  Eq ListaEq2
-// ListaEq2 -> id =  Eq ListaEq2 | e
-// Eq → Unary ListaT ; | ListaT ;
-void SyntacticAnalyzer2::ListaEq()
+//ListaEq -> id =  Eq ; ListaEq2
+// ListaEq2 -> id =  Eq ; ListaEq2 | e
+// Eq → Unary ListaT | ListaT
+void SyntacticAnalyzer2::ListaEq(bool isini)
 {
     if(this->tokens.at(i)->getTokenConstant() == ID)
     {
         //Começa o reconhecimento de uma equação.
         //Associa à variável atual uma nova equação
         //Cria uma equação para a variável e insere no hashmap
-        Equation* e = new Equation();
-        std::map<std::string, Equation* > eq_map;
-        this->ode->getEquations()[this->tokens.at(i)->getLexema()] = e;
-        this->eq = e;
-        if (this->eq == NULL)
-            cout << "EQUATION NULL" <<endl;
+        //this->ode->getEquations()[this->tokens.at(i)->getLexema()] = new Equation();
+        string varname = this->tokens.at(i)->getLexema();
+        printf("Varname: %s\n",varname.c_str());
+
         match(ID);
         match(ATTR);
         Term* root = Eq();
-        if (this->eq != NULL)
-            this->eq->setExprTreeRoot(root);
-        //else
-        //    cout << "EQUATION NULL" <<endl;
+
+        if (isini)
+        {
+            this->ode->getInitialization()[varname] = new Equation();
+            map<string,Equation*>::iterator it = this->ode->getInitialization().find(varname);
+            if (it != this->ode->getInitialization().end())
+            {
+                cout << "Chave encontada " <<endl;
+                it->second->setExprTreeRoot(root);
+            }
+        }
+        else
+        {
+            this->ode->getEquations()[varname] = new Equation();
+            map<string,Equation*>::iterator it = this->ode->getEquations().find(varname);
+            if (it != this->ode->getEquations().end())
+            {
+                cout << "Chave encontada " <<endl;
+                it->second->setExprTreeRoot(root);
+            }
+        }
+
         match(PCOMMA);
-        ListaEq2();
+        ListaEq2(isini);
     }
 }
 
-void SyntacticAnalyzer2::ListaEq2()
+void SyntacticAnalyzer2::ListaEq2(bool isini)
 {
     if(this->tokens.at(i)->getTokenConstant() == ID)
     {
-        //Começa o reconhecimento de uma equação.
-        //Associa à variável atual uma nova equação
-        Equation* e = new Equation();
-        this->ode->getEquations()[this->tokens.at(i)->getLexema()] = e;
-        this->eq = e;
+        //this->ode->getEquations()[this->tokens.at(i)->getLexema()] = new Equation();
+        string varname = this->tokens.at(i)->getLexema();
+        printf("Varname: %s\n",varname.c_str());
         match(ID);
         match(ATTR);
         Term* root = Eq();
-        if (this->eq != NULL)
-            this->eq->setExprTreeRoot(root);
-        //else
-            //cout << "EQUATION NULL" <<endl;
+        if (isini)
+        {
+            this->ode->getInitialization()[varname] = new Equation();
+            map<string,Equation*>::iterator it = this->ode->getInitialization().find(varname);
+            if (it != this->ode->getInitialization().end())
+            {
+                cout << "Chave encontada " <<endl;
+                it->second->setExprTreeRoot(root);
+            }
+        }
+        else
+        {
+            this->ode->getEquations()[varname] = new Equation();
+            map<string,Equation*>::iterator it = this->ode->getEquations().find(varname);
+            if (it != this->ode->getEquations().end())
+            {
+                cout << "Chave encontada " <<endl;
+                it->second->setExprTreeRoot(root);
+            }
+        }
         match(PCOMMA);
-        ListaEq2();
+        ListaEq2(isini);
     }
 }
 
@@ -212,7 +241,6 @@ Term* SyntacticAnalyzer2::Eq()
     }
     else
     {
-        t_sig = ' ';
         return ListaT(t_sig);
     }
 }
