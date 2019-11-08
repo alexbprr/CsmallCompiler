@@ -57,17 +57,17 @@ class Odemodel
 private:
 
 public:
-    std::map<std::string, Equation* > initialization; //Equações de inicialização
-    std::map<std::string, Equation* > equations;  //Cada variável está associada a uma equação //Conjunto dos lados direitos das EDOs
+    std::map<std::string, Term*> initialization; //Equações de inicialização
+    std::map<std::string, Term*> equations;  //Cada variável está associada a uma equação //Conjunto dos lados direitos das EDOs
 
     vector<string> varNames;
     vector<string> paramNames;
     Odemodel();
     ~Odemodel();
-    void addEquation(Equation* eq);
+    //void addEquation(Equation* eq);
     //string getVarName() const;
-    std::map<std::string, Equation* > getInitialization() const;
-    std::map<std::string, Equation* > getEquations() const;
+    std::map<std::string, Term* >& getInitialization();
+    std::map<std::string, Term* >& getEquations();
     //void setVarName(std::string vn);
     void generateRCode();
     void printOdeModel();

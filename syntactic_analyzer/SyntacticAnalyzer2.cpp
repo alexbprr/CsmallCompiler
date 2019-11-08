@@ -1,6 +1,17 @@
 #include "SyntacticAnalyzer2.h"
 
 using namespace std;
+
+//#include <unordered_map>
+
+template<typename K, typename V>
+void print_map(std::map<K,V> const &m)
+{
+    for (auto const& pair: m) {
+        std::cout << "{" << pair.first << ": " << pair.second << "}\n";
+    }
+}
+
 SyntacticAnalyzer2::SyntacticAnalyzer2(std::vector<Token*> tokens, LexicalAnalyzer* la)
 {
     this->tokens = tokens;
@@ -100,6 +111,8 @@ Odemodel* SyntacticAnalyzer2::S()
             //odeCodeFile << this->code;
             error_file.close();
             odeCodeFile.close();
+            //Print hashmaps
+            print_map(this->ode->initialization);
             return this->ode;
         }
 
@@ -146,35 +159,23 @@ void SyntacticAnalyzer2::ListaEq(bool isini)
     if(this->tokens.at(i)->getTokenConstant() == ID)
     {
         //Começa o reconhecimento de uma equação.
-        //Associa à variável atual uma nova equação
-        //Cria uma equação para a variável e insere no hashmap
-        //this->ode->getEquations()[this->tokens.at(i)->getLexema()] = new Equation();
+        //Associa uma nova equação à variável atual: Cria a equação para a variável e insere no hashmap
+        std::map<string, Term*> map_;
         string varname = this->tokens.at(i)->getLexema();
         printf("Varname: %s\n",varname.c_str());
 
         match(ID);
         match(ATTR);
         Term* root = Eq();
-
+        printf("----Testing tree: \n");
+        root->print(0);
         if (isini)
         {
-            this->ode->getInitialization()[varname] = new Equation();
-            map<string,Equation*>::iterator it = this->ode->getInitialization().find(varname);
-            if (it != this->ode->getInitialization().end())
-            {
-                cout << "Chave encontada " <<endl;
-                it->second->setExprTreeRoot(root);
-            }
+            this->ode->getInitialization()[varname] = root;
         }
         else
         {
-            this->ode->getEquations()[varname] = new Equation();
-            map<string,Equation*>::iterator it = this->ode->getEquations().find(varname);
-            if (it != this->ode->getEquations().end())
-            {
-                cout << "Chave encontada " <<endl;
-                it->second->setExprTreeRoot(root);
-            }
+            this->ode->getEquations()[varname] = root;
         }
 
         match(PCOMMA);
@@ -192,25 +193,15 @@ void SyntacticAnalyzer2::ListaEq2(bool isini)
         match(ID);
         match(ATTR);
         Term* root = Eq();
+        printf("----Testing tree: \n");
+        root->print(0);
         if (isini)
         {
-            this->ode->getInitialization()[varname] = new Equation();
-            map<string,Equation*>::iterator it = this->ode->getInitialization().find(varname);
-            if (it != this->ode->getInitialization().end())
-            {
-                cout << "Chave encontada " <<endl;
-                it->second->setExprTreeRoot(root);
-            }
+            this->ode->getInitialization()[varname] = root;
         }
         else
         {
-            this->ode->getEquations()[varname] = new Equation();
-            map<string,Equation*>::iterator it = this->ode->getEquations().find(varname);
-            if (it != this->ode->getEquations().end())
-            {
-                cout << "Chave encontada " <<endl;
-                it->second->setExprTreeRoot(root);
-            }
+            this->ode->getEquations()[varname] = root;
         }
         match(PCOMMA);
         ListaEq2(isini);

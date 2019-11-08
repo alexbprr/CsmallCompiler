@@ -9,14 +9,14 @@ Odemodel::~Odemodel()
         delete m.second;
 }
 
-std::map<std::string, Equation* > Odemodel::getInitialization() const
+std::map<std::string, Term*>& Odemodel::getInitialization()
 {
-    return this->initialization;
+    return (this->initialization);
 }
 
-std::map<std::string, Equation* > Odemodel::getEquations() const
+std::map<std::string, Term*>& Odemodel::getEquations()
 {
-    return this->equations;
+    return (this->equations);
 }
 
 void Odemodel::printOdeModel()
@@ -26,12 +26,14 @@ void Odemodel::printOdeModel()
     for (vector<string>::iterator it = this->varNames.begin(); it != this->varNames.end(); ++it)
     {
         string s = *it;
-        map<string,Equation*>::iterator it2 = this->getEquations().find(s);
+        printf("s: %s\n", s.c_str());
+        map<string,Term*>::iterator it2 = this->getEquations().find(s);
         if(it2 != this->getEquations().end())
         {
-            printf("chave found\n");
-            if (it2->second->getExprTreeRoot() != NULL)
-                it2->second->getExprTreeRoot()->print(0);
+            printf("equation found\n");
+            it2->second->print(0);
+            //if (it2->second->getExprTreeRoot() != NULL)
+                //it2->second->getExprTreeRoot()->print(0);
         }
         else
             cout << "Equation not defined for " << s << endl;
